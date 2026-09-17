@@ -1,0 +1,1455 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f7c9d8"><title>Gestto • Sistema de Gestão V1</title>
+<style>
+:root{--bg:#fff8fb;--card:#fff;--ink:#382b32;--muted:#866d79;--pink:#e96f9b;--pink2:#f8d9e4;--rose:#bd416e;--line:#efdde4;--green:#dff4e8;--yellow:#fff0c7;--red:#fde0e4;--shadow:0 8px 25px #9c567018}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}.app{max-width:950px;margin:auto;padding-bottom:90px}.hero{background:linear-gradient(135deg,#ffe7ef,#f5bdcf);padding:14px 18px 18px;border-radius:0 0 28px 28px}.brand{display:flex;align-items:center;gap:12px}.brand img{width:96px;height:96px;object-fit:cover;border-radius:20px;background:white}.brand h1{margin:0;font-size:21px}.brand p{margin:3px 0;color:#72515f;font-size:12px}.content{padding:14px}.grid{display:grid;gap:10px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:13px;box-shadow:var(--shadow)}.metric span{font-size:11px;color:var(--muted)}.metric b{display:block;font-size:20px;margin-top:3px}.title{display:flex;align-items:center;justify-content:space-between;margin:18px 2px 9px}.title h2{font-size:17px;margin:0}.view{display:none}.view.active{display:block}
+button,.btn{border:0;border-radius:12px;padding:10px 13px;background:var(--pink);color:white;font-weight:700;font:inherit;cursor:pointer}.ghost{background:white;color:var(--ink);border:1px solid var(--line)}.soft{background:var(--pink2);color:var(--rose)}input,select,textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:11px;background:#fff;font:inherit;color:var(--ink)}label{font-size:11px;color:var(--muted);display:block;margin:8px 0 4px}.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.tablebox{overflow:auto}.table{border-collapse:collapse;width:100%;font-size:12px}.table td,.table th{padding:9px 7px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:left}.pill{font-size:10px;padding:4px 7px;border-radius:999px;font-weight:700}.ok{background:var(--green)}.warn{background:var(--yellow)}.bad{background:var(--red)}.product{display:flex;align-items:center;gap:10px}.product img{width:55px;height:55px;object-fit:cover;border-radius:11px;background:#f6edf1}.product .info{flex:1}.product h3{font-size:14px;margin:0 0 2px}.sub{font-size:11px;color:var(--muted)}.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.quick button{background:white;color:var(--ink);border:1px solid var(--line);padding:12px 5px;font-size:11px}.quick i{display:block;font-style:normal;font-size:22px;color:var(--pink);margin-bottom:4px}
+nav{position:fixed;z-index:10;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,1fr);padding:6px 4px max(6px,env(safe-area-inset-bottom))}nav button{background:none;color:var(--muted);padding:4px 1px;font-size:9px}nav button.active{color:var(--rose)}nav b{display:block;font-size:18px}
+dialog{border:0;border-radius:20px;width:min(94vw,600px);padding:0;box-shadow:0 30px 80px #0003}dialog::backdrop{background:#4c303c55}.modal{padding:17px}.photo{width:75px;height:75px;border-radius:13px;object-fit:cover;background:#f6edf1}.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);background:#4b3540;color:white;padding:9px 13px;border-radius:999px;font-size:11px;opacity:0;transition:.2s;z-index:99}.toast.show{opacity:1}.mt{margin-top:10px}
+@media(max-width:650px){.g3{grid-template-columns:1fr 1fr}.quick{grid-template-columns:repeat(3,1fr)}.brand img{width:82px;height:82px}}
+
+.scanbox{background:#fff;border:1px dashed var(--pink);border-radius:14px;padding:10px;margin-top:8px}
+.scan-actions{display:flex;gap:8px;flex-wrap:wrap}
+.scan-actions button,.scan-actions label{flex:1;min-width:120px;text-align:center}
+#scanVideo{width:100%;max-height:280px;border-radius:14px;background:#111;display:none;margin-top:10px}
+.scan-note{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.35}
+
+.homeTop{background:linear-gradient(135deg,#fff,#fff3f6);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:12px}
+.homeTop b{font-size:18px}.homeTop .sub{margin-top:4px}
+.dashGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.dashCard{background:#fff;border:1px solid var(--line);border-radius:17px;padding:12px;box-shadow:var(--shadow)}
+.dashCard .ico{font-size:18px}.dashCard span{display:block;font-size:10px;color:var(--muted);font-weight:700;margin-top:5px}.dashCard b{display:block;font-size:18px;margin-top:2px}
+.alertSummary{display:grid;gap:8px}.alertItem{background:#fff;border:1px solid var(--line);border-radius:15px;padding:11px 12px;font-size:12px}
+@media(min-width:700px){.dashGrid{grid-template-columns:repeat(4,1fr)}}
+
+/* MA PERFUMARIA — identidade visual mobile */
+:root{
+ --bg:#fffaf9;--card:#ffffff;--text:#211b1c;--muted:#827579;
+ --line:#f0dedf;--primary:#df6f84;--primary2:#f5c6cf;
+ --soft:#fff0f3;--shadow:0 8px 24px rgba(91,55,62,.08);
+}
+body{background:linear-gradient(180deg,#fffaf9 0%,#fff 45%,#fff8f7 100%);color:var(--text)}
+header{background:rgba(255,250,249,.94)!important;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand b,.brand strong{letter-spacing:.7px}
+.card{border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px}
+button{border-radius:14px}
+button:not(.ghost){background:linear-gradient(135deg,#df6f84,#e991a1)}
+.ghost{background:#fff;color:#5d4c50;border-color:var(--line)}
+nav{background:rgba(255,255,255,.96)!important;border-top:1px solid var(--line)}
+nav button.active{color:#d85e77}
+.homeTop{
+ background:linear-gradient(135deg,#fff 0%,#fff2f4 55%,#f5d8dd 100%)!important;
+ border:1px solid #efd9dd!important;border-radius:22px!important;padding:17px!important;
+ position:relative;overflow:hidden
+}
+.homeTop:after{content:"✦";position:absolute;right:17px;top:11px;font-size:28px;color:#e8a8b5;opacity:.55}
+.homeTop b{font-family:Georgia,serif;font-size:21px!important;letter-spacing:2px;text-transform:uppercase}
+.homeTop .sub{font-size:12px!important}
+.dashGrid{gap:10px!important}
+.dashCard{border-radius:18px!important;border:1px solid #f0dfe2!important;box-shadow:0 6px 18px rgba(91,55,62,.06)!important}
+.dashCard .ico{color:#d95f78}
+.dashCard span{color:#8c777d!important}
+.dashCard b{color:#281f21}
+.quick button{background:linear-gradient(180deg,#fff,#fff3f5)!important;color:#34282b!important;border:1px solid #efd8dd!important;box-shadow:0 4px 14px rgba(91,55,62,.05)}
+.quick button i{color:#d95f78}
+.alertItem{border:1px solid #f0dfe2!important;box-shadow:0 4px 14px rgba(91,55,62,.04)}
+.title h2{font-family:Georgia,serif;font-size:17px;letter-spacing:.2px}
+input,select,textarea{border-color:#eadadd!important;background:#fff!important;border-radius:13px!important}
+.table th{background:#fff3f5}
+.badge{border-radius:999px}
+
+
+/* Rodapé leve — mantém o restante da identidade aprovada */
+nav{
+ background:rgba(255,255,255,.97)!important;
+ border-top:1px solid #f1e5e7!important;
+ box-shadow:0 -2px 10px rgba(70,45,52,.035)!important;
+ padding-top:3px!important;
+}
+nav button{
+ background:transparent!important;
+ border:0!important;
+ box-shadow:none!important;
+ color:#9b9093!important;
+ font-size:10px!important;
+ font-weight:600!important;
+ padding:6px 3px!important;
+ min-height:48px!important;
+}
+nav button i,nav button span:first-child{
+ font-size:18px!important;
+ font-weight:400!important;
+ line-height:1!important;
+}
+nav button.active{
+ color:#d56f86!important;
+ background:transparent!important;
+}
+nav button.active i,nav button.active span:first-child{
+ color:#d56f86!important;
+}
+
+
+/* V12.5 APP — PIN, parcelas editáveis e WhatsApp */
+.lockScreen{
+  position:fixed;inset:0;z-index:9999;background:#fff8fa;
+  display:flex;align-items:center;justify-content:center;padding:22px;
+}
+.lockScreen.hidden{display:none}
+.lockCard{
+  width:min(420px,100%);background:#fff;border:1px solid #efdde2;border-radius:24px;
+  padding:26px 20px;box-shadow:0 18px 50px rgba(80,45,55,.12);text-align:center
+}
+.lockBrand{font-size:24px;font-weight:900;letter-spacing:2px}
+.lockSub{letter-spacing:5px;font-size:10px;margin-top:4px;color:#b56a7c}
+.pinDots{font-size:28px;letter-spacing:8px;margin:16px 0 8px}
+.installmentsBox{background:#fff8fa;border:1px solid #f0dfe3;border-radius:16px;padding:12px;margin-top:12px}
+.installmentRow{display:grid;grid-template-columns:74px 1fr 100px;gap:8px;align-items:center;margin-top:8px}
+.waBtn{background:#fff!important;color:#276b43!important;border:1px solid #cfe8d8!important;box-shadow:none!important}
+.smallActions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.smallActions button{padding:8px 10px;font-size:11px}
+@media(max-width:520px){.installmentRow{grid-template-columns:65px 1fr 90px}.installmentRow input{padding:9px 6px}}
+
+
+/* V12.5 APP */
+.sectionTabs{display:flex;gap:7px;overflow:auto;margin:8px 0 12px}.sectionTabs button{white-space:nowrap;background:#fff!important;color:#6d5960!important;border:1px solid var(--line)!important;box-shadow:none!important}.sectionTabs button.active{background:var(--soft)!important;color:var(--rose)!important;border-color:#eccbd3!important}
+.catalogToolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px}.catalogCheck{width:auto!important;margin-right:8px}.catalogItem{display:flex;gap:10px;align-items:center}.catalogItem img{width:70px;height:70px;object-fit:cover;border-radius:14px;background:#f8eef1}.catalogItem .info{flex:1}
+.notice{padding:10px 12px;border-radius:14px;background:#fff6dd;border:1px solid #f0dda7;font-size:11px;line-height:1.45}.goodNotice{background:#edf9f2;border-color:#caead6}.dangerNotice{background:#fff0f1;border-color:#efced2}
+.fileActions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.fileActions label,.fileActions button{text-align:center}
+#html5Reader{width:100%;margin-top:10px}.hidden{display:none!important}.orderStatus{font-size:10px;font-weight:800;padding:5px 8px;border-radius:999px;background:#fff0c7}.historyCard{opacity:.84}
+.purchaseRow{display:grid;grid-template-columns:1fr 80px;gap:8px;align-items:end}.mutedBox{background:#fffafd;border:1px dashed var(--line);border-radius:14px;padding:10px}
+@media(max-width:560px){.fileActions{grid-template-columns:1fr}.catalogToolbar{grid-template-columns:1fr}.purchaseRow{grid-template-columns:1fr 72px}}
+
+
+/* GESTTO V1 — identidade aprovada */
+:root{--bg:#07111c;--card:#0d1a27;--ink:#f5f8fc;--muted:#9aaabd;--line:#223448;--primary:#1687ff;--primary2:#0b5ec4;--rose:#1687ff;--soft:#10263d;--shadow:0 10px 30px rgba(0,0,0,.22)}
+body{background:radial-gradient(circle at 30% 0,#102a43 0,#07111c 35%,#050b12 100%)!important;color:var(--ink)!important}.app{max-width:1050px}.hero{background:rgba(5,13,22,.92)!important;border-bottom:1px solid var(--line);border-radius:0!important}.brand img{width:58px!important;height:58px!important;border-radius:16px!important;background:#07111c!important}.brand h1{font-size:24px!important}.brand p{color:var(--muted)!important}.userBadge{margin-left:auto;color:var(--muted);font-size:12px;border:1px solid var(--line);padding:8px 11px;border-radius:999px}.content{padding:14px}.card,.dashCard,.alertItem,.homeTop{background:linear-gradient(145deg,#0e1d2c,#091522)!important;border-color:var(--line)!important;color:var(--ink)!important;box-shadow:var(--shadow)!important}.homeTop{min-height:126px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(110deg,#0b1724 0%,#102a43 60%,#0a1826 100%)!important}.homeTop:after{content:"GESTÃO"!important;color:#1687ff!important;font-family:system-ui!important;font-size:12px!important;letter-spacing:4px!important;top:18px!important}.homeTop b{font-family:system-ui!important;text-transform:none!important;letter-spacing:-.5px!important;font-size:24px!important}.sub,.dashCard span{color:var(--muted)!important}.dashCard b{color:#fff!important}.dashCard .ico,.quick button i{color:#32a0ff!important}.quick button{background:linear-gradient(145deg,#10243a,#0b1826)!important;color:#fff!important;border-color:#27425e!important}.title h2{font-family:system-ui!important;color:#fff}.table th{background:#10263d!important}.table td,.table th{border-color:var(--line)!important}input,select,textarea{background:#0c1926!important;border-color:#2b4055!important;color:#fff!important}dialog{background:#0b1724!important;color:#fff!important}nav{background:rgba(6,15,24,.97)!important;border-color:#203347!important;grid-template-columns:repeat(6,1fr)!important}nav button{color:#8393a6!important}nav button.active{color:#2b9cff!important}.soft{background:#102c49!important;color:#5bb0ff!important}.ghost{background:#0d1a27!important;color:#fff!important;border-color:#2a4057!important}
+.lockScreen{background:radial-gradient(circle at 25% 0,#123252 0,#07111c 40%,#040a10 100%)!important;overflow:auto;align-items:flex-start!important;padding:24px 16px!important}.saasGate{width:min(520px,100%);margin:auto;padding-top:max(12px,env(safe-area-inset-top))}.gateBrand{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0 22px}.gateBrand img{width:64px;height:64px;border-radius:18px}.gateBrand strong{display:block;font-size:30px}.gateBrand span{font-size:9px;letter-spacing:3px;color:#a7b5c5}.gatePanel{background:rgba(11,25,39,.92);border:1px solid #29425d;border-radius:26px;padding:22px;box-shadow:0 28px 80px rgba(0,0,0,.4)}.gatePanel h2{margin:4px 0 12px;font-size:26px}.gateHero h2{font-size:30px;line-height:1.08}.gateHero em{font-style:normal;color:#2497ff}.gateHero p{color:#a8b7c8;line-height:1.5}.gatePanel label{color:#aab9c9;font-size:12px}.gatePanel input,.gatePanel select{margin-bottom:8px}.primaryWide,.outlineWide{width:100%;padding:14px;margin-top:12px;font-weight:800}.primaryWide{background:linear-gradient(135deg,#0877ee,#1c9aff)!important}.outlineWide{background:transparent!important;border:1px solid #1687ff!important;color:#fff!important}.textBtn{width:100%;background:transparent!important;color:#79bfff!important;margin-top:6px}.trialText{text-align:center;color:#8799ad;font-size:11px;margin-top:16px}.stepLabel{color:#36a3ff;font-size:10px;font-weight:900;letter-spacing:2px}.twoCol{display:grid;grid-template-columns:1fr 1fr;gap:8px}.plans{display:grid;gap:8px}.plan{display:grid!important;grid-template-columns:22px 1fr auto;gap:4px 8px;align-items:center;border:1px solid #2a4159;border-radius:16px;padding:12px!important;margin:0!important}.plan input{width:auto!important;margin:0!important}.plan strong{font-size:17px;color:#fff}.plan small{grid-column:2/4;color:#8fa2b6}.plan:has(input:checked){border-color:#1687ff;background:#0e2a45}.payMethods{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.pay{display:flex!important;gap:8px;align-items:center;border:1px solid #2a4159;border-radius:14px;padding:12px!important;margin:0!important}.pay input{width:auto!important;margin:0!important}.demoNotice{margin-top:12px;background:#10263d;border:1px solid #29445f;border-radius:12px;padding:10px;color:#9fb0c2;font-size:11px;line-height:1.4}@media(max-width:520px){.twoCol{grid-template-columns:1fr}.gatePanel{padding:18px}.gateHero h2{font-size:27px}.userBadge{display:none}}
+</style>
+<meta name="theme-color" content="#f3a9b7">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<meta name="application-name" content="Gestto">
+<meta name="apple-mobile-web-app-title" content="Gestto">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+</head><body><div class="app">
+<div class="hero"><div class="brand"><img src="app-logo.png" alt="Gestto"><div><h1>Gestto</h1><p>Sistema de gestão • V1</p></div><div class="userBadge">Administrador</div></div></div>
+<div class="content">
+<section id="inicio" class="view active">
+<div class="homeTop"><b>Tudo sob controle, em um só lugar.</b><div class="sub mt" id="dSaudacao">Gestão simples para o crescimento do seu negócio.</div></div>
+<div class="dashGrid">
+ <div class="dashCard"><div class="ico">🛍️</div><span>VENDAS HOJE</span><b id="dHoje">R$ 0,00</b></div>
+ <div class="dashCard"><div class="ico">📈</div><span>VENDAS DO MÊS</span><b id="dVendas">R$ 0,00</b></div>
+ <div class="dashCard"><div class="ico">✨</div><span>LUCRO DO MÊS</span><b id="dLucro">R$ 0,00</b></div>
+ <div class="dashCard"><div class="ico">💳</div><span>A RECEBER</span><b id="dReceber">R$ 0,00</b></div>
+ <div class="dashCard"><div class="ico">💰</div><span>RECEBIDO NO MÊS</span><b id="dRecebidoMes">R$ 0,00</b></div>
+ <div class="dashCard"><div class="ico">🧾</div><span>TICKET MÉDIO</span><b id="dTicket">R$ 0,00</b></div>
+ <div class="dashCard"><div class="ico">🧴</div><span>ITENS EM ESTOQUE</span><b id="dEstoqueQtd">0</b></div>
+ <div class="dashCard"><div class="ico">📦</div><span>VALOR DO ESTOQUE</span><b id="dEstoqueValor">R$ 0,00</b></div>
+</div>
+<div style="display:none"><b id="dPontos">0</b></div>
+
+<div class="title"><h2>Acesso rápido</h2></div>
+<div class="quick">
+ <button onclick="go('vendas')"><i>＋</i>Nova venda</button>
+ <button onclick="go('produtos')"><i>🧴</i>Produtos</button>
+ <button onclick="openEntrada()"><i>⇩</i>Entrada</button>
+ <button onclick="go('clientes')"><i>♙</i>Clientes</button>
+ <button onclick="go('receber')"><i>R$</i>Receber</button>
+ <button onclick="go('pedidos')"><i>☷</i>Pedidos</button>
+ <button onclick="go('relatorios')"><i>▥</i>Relatórios</button>
+ <button onclick="go('catalogo')"><i>▧</i>Pronta entrega</button>
+</div>
+
+<div class="title"><h2>Atenção agora</h2></div>
+<div class="alertSummary">
+ <div class="alertItem"><b>📦 Estoque baixo</b><div id="dBaixo" class="sub mt"></div></div>
+ <div class="alertItem"><b>⏳ Produtos próximos do vencimento</b><div id="dValidade" class="sub mt"></div></div>
+</div>
+
+<div class="title"><h2>Destaques do mês</h2></div>
+<div class="grid g2">
+ <div class="card"><b>🏆 Produto mais vendido</b><div id="dTopProduto" class="sub mt"></div></div>
+ <div class="card"><b>💗 Melhor cliente</b><div id="dTopCliente" class="sub mt"></div></div>
+</div>
+
+<div class="title"><h2>Próximos recebimentos</h2></div>
+<div class="card tablebox"><table class="table"><thead><tr><th>Cliente</th><th>Vencimento</th><th>Saldo</th><th>Status</th></tr></thead><tbody id="dProxReceber"></tbody></table></div>
+</section>
+
+<section id="produtos" class="view"><div class="title"><h2>Produtos</h2><button onclick="openProduto()">+ Produto</button></div><input id="qProd" placeholder="Buscar nome, código ou marca" oninput="renderProdutos()"><div id="prodList" class="grid mt"></div></section>
+
+<section id="vendas" class="view"><div class="title"><h2>Nova venda</h2></div><div class="card">
+<label>Cliente</label><select id="vCliente"></select><label>Código do produto ou código de barras</label>
+<div class="row">
+  <input id="vCodigo" placeholder="Digite o código do produto ou código de barras" onkeydown="if(event.key==='Enter'){event.preventDefault();buscarProdutoCodigo()}">
+  <button type="button" class="ghost" onclick="buscarProdutoCodigo()">Buscar</button>
+</div>
+<div class="row"><div><label>Produto</label><select id="vProduto" onchange="preencheCodigoVenda()"></select></div><div><label>Qtd.</label><input id="vQtd" type="number" value="1" min="1"></div></div>
+<div class="scan-actions mt">
+  <button type="button" class="soft" onclick="startScanner('venda')">📷 Escanear produto</button>
+  <label class="btn ghost">📸 Ler por foto<input id="scanFileVenda" type="file" accept="image/*" capture="environment" hidden onchange="scanImageFile(event,'venda')"></label>
+</div>
+<button class="soft mt" onclick="addCart()">Adicionar</button>
+<div class="tablebox mt"><table class="table"><tbody id="cart"></tbody></table></div>
+<div class="row"><div><label>Desconto</label><input id="vDesc" type="number" step=".01" value="0" oninput="renderCart()"></div><div><label>Pagamento</label><select id="vForma" onchange="atualizaParcelasEditor()"><option>Pix</option><option>Dinheiro</option><option>Cartão</option><option>Prazo</option></select></div></div>
+<div class="row"><div><label>Data compra</label><input id="vData" type="date" onchange="atualizaParcelasEditor()"></div><div><label>Nº parcelas</label><input id="vParcelas" type="number" value="1" min="1" max="36" oninput="atualizaParcelasEditor()"></div></div><label>1º vencimento</label><input id="vVenc" type="date" onchange="atualizaParcelasEditor()"><div id="parcelasEditor"></div><div class="card mt" style="background:var(--pink2);box-shadow:none"><b>Total: <span id="vTotal">R$ 0,00</span></b></div><button class="mt" style="width:100%" onclick="finalVenda()">Finalizar venda</button></div>
+<div class="title"><h2>Histórico</h2></div><div class="card tablebox"><table class="table"><thead><tr><th>Data</th><th>Cliente</th><th>Total</th><th>Forma</th><th></th></tr></thead><tbody id="salesList"></tbody></table></div></section>
+
+<section id="clientes" class="view"><div class="title"><h2>Clientes</h2><button onclick="openCliente()">+ Cliente</button></div><input id="qCli" placeholder="Buscar cliente" oninput="renderClientes()"><div id="cliList" class="grid mt"></div></section>
+
+<section id="receber" class="view"><div class="title"><h2>Contas a receber</h2></div><div class="card tablebox"><table class="table"><thead><tr><th>Cliente</th><th>Parcela</th><th>Venc.</th><th>Saldo</th><th>Status</th><th></th></tr></thead><tbody id="recList"></tbody></table></div></section>
+
+<section id="pedidos" class="view">
+<div class="title"><h2>Pedidos e reposição</h2><button onclick="openPedido()">+ Pedido cliente</button></div>
+<div class="sectionTabs"><button id="tabPedAtivos" class="active" onclick="showPedidosTab('ativos')">Pedidos ativos</button><button id="tabPedCompras" onclick="showPedidosTab('compras')">Reposição / compras</button><button id="tabPedHist" onclick="showPedidosTab('historico')">Histórico</button></div>
+<div id="pedAtivos"><div class="notice goodNotice">Pedidos entregues saem desta lista automaticamente e ficam guardados no Histórico.</div><div id="pedList" class="grid mt"></div></div>
+<div id="pedCompras" class="hidden"><div class="notice">Produtos com estoque igual ou abaixo do mínimo aparecem como sugestão de reposição. Você também pode registrar um pedido ao fornecedor.</div><div id="purchaseSuggestions" class="grid mt"></div><div class="title"><h2>Pedidos ao fornecedor</h2><button onclick="openCompraFornecedor()">+ Compra</button></div><div id="supplierList" class="grid"></div></div>
+<div id="pedHistorico" class="hidden"><div id="pedHistory" class="grid"></div></div>
+</section>
+
+<section id="catalogo" class="view">
+<div class="title"><h2>Pronta Entrega</h2></div>
+<div class="card">
+  <div class="catalogToolbar">
+    <input id="catBusca" placeholder="Buscar produto, marca ou linha" oninput="renderCatalogo()">
+    <select id="catMarca" onchange="renderCatalogo()"><option value="">Todas as marcas</option></select>
+  </div>
+  <div class="smallActions mt"><button class="ghost" onclick="selecionarCatalogo(true)">Selecionar todos</button><button class="ghost" onclick="selecionarCatalogo(false)">Limpar seleção</button><button onclick="gerarCatalogoPDF(false)">PDF selecionados</button><button onclick="gerarCatalogoPDF(true)">PDF completo</button></div>
+  <div class="sub mt">A quantidade em estoque não aparece no PDF do cliente. Produtos zerados saem automaticamente da Pronta Entrega.</div>
+</div>
+<div id="catList" class="grid g2 mt"></div>
+</section>
+
+<section id="relatorios" class="view">
+<div class="title"><h2>Relatórios</h2></div>
+<div class="card">
+  <b>Baixar relatório em PDF</b>
+  <div class="sub mt">Escolha o período para gerar um relatório pronto para salvar e compartilhar.</div>
+  <div class="row mt" style="grid-template-columns:repeat(3,1fr)">
+    <button onclick="gerarRelatorioPDF('diario')">PDF diário</button>
+    <button onclick="gerarRelatorioPDF('semanal')">PDF semanal</button>
+    <button onclick="gerarRelatorioPDF('mensal')">PDF mensal</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="row">
+    <div><label>Data inicial</label><input id="rIni" type="date" onchange="renderRelatorioVendas()"></div>
+    <div><label>Data final</label><input id="rFim" type="date" onchange="renderRelatorioVendas()"></div>
+  </div>
+</div>
+
+<div class="grid g2 mt">
+  <div class="card metric"><span>Faturamento no período</span><b id="rFat">R$ 0,00</b></div>
+  <div class="card metric"><span>Lucro no período</span><b id="rLuc">R$ 0,00</b></div>
+  <div class="card metric"><span>Quantidade de vendas</span><b id="rQtdVendas">0</b></div>
+  <div class="card metric"><span>Ticket médio</span><b id="rTicket">R$ 0,00</b></div>
+  <div class="card metric"><span>Valor em estoque</span><b id="rEst">R$ 0,00</b></div>
+  <div class="card metric"><span>Pontos em estoque</span><b id="rPts">0</b></div>
+</div>
+
+<div class="title"><h2>Relatório de vendas</h2></div>
+<div class="card tablebox">
+<table class="table">
+<thead><tr><th>Data</th><th>Cliente</th><th>Itens</th><th>Total</th><th>Lucro</th><th>Forma</th></tr></thead>
+<tbody id="rVendasList"></tbody>
+</table>
+</div>
+
+<div class="title"><h2>Ranking de produtos</h2></div>
+<div class="card tablebox">
+<table class="table">
+<thead><tr><th>#</th><th>Produto</th><th>Código</th><th>Qtd.</th><th>Faturamento</th></tr></thead>
+<tbody id="rRankProdutos"></tbody>
+</table>
+</div>
+
+<div class="title"><h2>Ranking de clientes</h2></div>
+<div class="card tablebox">
+<table class="table">
+<thead><tr><th>#</th><th>Cliente</th><th>Compras</th><th>Total comprado</th></tr></thead>
+<tbody id="rRankClientes"></tbody>
+</table>
+</div>
+
+<div class="title"><h2>Excel, atualização e backup</h2></div>
+<div class="card">
+  <b>Relatório Excel completo</b><div class="sub mt">Gera um arquivo com produtos, lotes, clientes, vendas, parcelas, recebimentos, pedidos e resumo financeiro.</div>
+  <button class="mt" onclick="exportarExcelCompleto()">📊 Exportar Excel completo</button>
+</div>
+<div class="card">
+  <b>Atualização manual entre aparelhos</b>
+  <div class="sub mt">Use o aparelho principal para gerar uma atualização de produtos, estoque e clientes. No outro aparelho, importe sem apagar as vendas locais.</div>
+  <div class="fileActions mt"><button onclick="exportarAtualizacao()">📤 Gerar atualização</button><label class="btn soft">📥 Importar atualização<input type="file" hidden accept=".json,application/json" onchange="importarAtualizacao(event)"></label></div>
+  <div class="notice mt">Importante: esta é uma atualização manual, não sincronização em tempo real. Se os dois aparelhos venderem ao mesmo tempo, os estoques podem ficar diferentes.</div>
+</div>
+
+<div class="card">
+  <b>Instalar MA Perfumaria no celular</b>
+  <div class="sub mt">Android: toque em “Instalar aplicativo”. No iPhone, use Compartilhar → Adicionar à Tela de Início.</div>
+  <button id="btnInstalarApp" class="mt" onclick="instalarApp()">📲 Instalar aplicativo</button>
+  <div id="installStatus" class="sub mt">O app pode ser instalado como atalho na tela inicial.</div>
+</div>
+
+<div class="card">
+  <b>Backup completo deste aparelho</b>
+  <div class="fileActions mt"><button onclick="backup()">💾 Gerar backup</button><label class="btn soft">♻️ Restaurar backup<input id="restoreFile" type="file" hidden accept=".json,application/json" onchange="restore(event)"></label></div>
+  <div id="backupStatus" class="sub mt">Nenhum backup gerado nesta sessão.</div>
+  <div class="smallActions mt"><button class="ghost" onclick="bloquearApp()">🔒 Bloquear app</button><button class="ghost" style="border-color:#d88;color:#a33" onclick="abrirResetSeguro()">Apagar todos os dados</button></div>
+</div>
+</section>
+</div></div>
+
+<nav><button class="active" data-v="inicio" onclick="go('inicio')"><b>⌂</b>Início</button><button data-v="vendas" onclick="go('vendas')"><b>＋</b>Vendas</button><button data-v="produtos" onclick="go('produtos')"><b>▦</b>Produtos</button><button data-v="clientes" onclick="go('clientes')"><b>♙</b>Clientes</button><button data-v="receber" onclick="go('receber')"><b>R$</b>Financeiro</button><button data-v="relatorios" onclick="go('relatorios')"><b>☰</b>Mais</button></nav>
+
+<dialog id="dlgProduto"><div class="modal">
+<div class="title"><h2>Cadastro completo do produto</h2><button class="ghost" onclick="dlgProduto.close()">×</button></div>
+<input id="pId" type="hidden">
+<div class="row"><img id="pPrev" class="photo"><div><label>Foto do produto</label><input id="pFoto" type="file" accept="image/*" onchange="foto(event)"></div></div>
+
+<div class="row"><div><label>Nome do produto</label><input id="pNome"></div><div><label>Marca</label><select id="pMarca"><option>O Boticário</option><option>Natura</option><option>Avon</option><option>Eudora</option><option>Outra</option></select></div></div>
+<div class="row"><div><label>Linha do produto</label><input id="pLinha" placeholder="Ex.: Nativa SPA, Tododia, Instance..."></div><div></div></div>
+
+<div class="row"><div><label>Código do produto</label><input id="pCod" placeholder="Ex.: NAT-001"></div><div><label>Código de barras</label><input id="pBarcode" inputmode="numeric" placeholder="EAN / código de barras"></div></div>
+<label>Categoria</label><input id="pCat" placeholder="Perfume, hidratante, maquiagem...">
+<div class="scanbox">
+  <b style="font-size:12px">Leitor de código de barras</b>
+  <div class="scan-actions mt">
+    <button type="button" class="soft" onclick="startScanner('cadastro')">📷 Ler com câmera</button>
+    <label class="btn ghost">📸 Ler por foto<input id="scanFileCadastro" type="file" accept="image/*" capture="environment" hidden onchange="scanImageFile(event,'cadastro')"></label>
+  </div>
+  <div class="scan-note">Se a câmera não abrir neste arquivo HTML, use “Ler por foto” ou digite o código manualmente.</div>
+</div>
+
+<div class="row"><div><label>Fornecedor / origem</label><input id="pFornecedor" placeholder="Ex.: Natura ciclo 12"></div><div><label>Status</label><select id="pStatus"><option value="Ativo">Ativo</option><option value="Inativo">Inativo</option></select></div></div>
+
+<div class="row"><div><label>Valor de compra inicial</label><input id="pCompraIni" type="number" step=".01" oninput="calcProduto()"></div><div><label>Valor de revenda</label><input id="pPreco" type="number" step=".01" oninput="calcProduto()"></div></div>
+
+<div class="row"><div><label>Lucro por unidade</label><input id="pLucro" disabled></div><div><label>Margem de lucro</label><input id="pMargem" disabled></div></div>
+
+<div class="row"><div><label>Pontos por unidade</label><input id="pPontosIni" type="number" step=".01"></div><div><label>Quantidade inicial</label><input id="pQtdIni" type="number" min="0"></div></div>
+
+<div class="row"><div><label>Data da entrada inicial</label><input id="pDataIni" type="date"></div><div><label>Validade inicial</label><input id="pValIni" type="date"></div></div>
+
+<label>Estoque mínimo</label><input id="pMin" type="number" value="1" min="0">
+<label>Observações</label><textarea id="pObs" rows="3" placeholder="Anotações sobre o produto"></textarea>
+
+<div class="card mt" style="background:var(--pink2);box-shadow:none">
+<b>Depois do cadastro inicial</b>
+<div class="sub mt">As próximas compras deste mesmo produto devem ser lançadas em “Entrada de mercadoria”, com novo custo, quantidade, pontos e validade.</div>
+</div>
+
+<button class="mt" style="width:100%" onclick="saveProduto()">Salvar produto</button>
+</div></dialog>
+
+<dialog id="dlgEntrada"><div class="modal"><div class="title"><h2>Entrada de mercadoria</h2><button class="ghost" onclick="dlgEntrada.close()">×</button></div><label>Produto</label><select id="eProd"></select><div class="row"><div><label>Quantidade</label><input id="eQtd" type="number" min="1"></div><div><label>Custo unitário</label><input id="eCusto" type="number" step=".01"></div></div><div class="row"><div><label>Pontos por unidade</label><input id="ePontos" type="number" step=".01"></div><div><label>Data da entrada</label><input id="eData" type="date"></div></div><label>Validade</label><input id="eVal" type="date"><label>Observação</label><input id="eObs"><button class="mt" style="width:100%" onclick="saveEntrada()">Registrar entrada</button></div></dialog>
+
+<dialog id="dlgCliente"><div class="modal"><div class="title"><h2>Cliente</h2><button class="ghost" onclick="dlgCliente.close()">×</button></div><input id="cId" type="hidden"><label>Nome</label><input id="cNome"><label>Telefone</label><input id="cTel"><label>Observações</label><textarea id="cObs"></textarea><button class="mt" style="width:100%" onclick="saveCliente()">Salvar</button></div></dialog>
+
+<dialog id="dlgPg"><div class="modal"><div class="title"><h2>Registrar pagamento</h2><button class="ghost" onclick="dlgPg.close()">×</button></div><input id="pgId" type="hidden"><label>Valor recebido</label><input id="pgValor" type="number" step=".01"><div id="pgLimite" class="sub mt"></div><label>Data do pagamento</label><input id="pgData" type="date"><label>Forma</label><select id="pgForma"><option>Pix</option><option>Dinheiro</option><option>Cartão</option><option>Outro</option></select><button class="mt" style="width:100%" onclick="savePg()">Salvar</button></div></dialog>
+
+<dialog id="dlgPedido"><div class="modal">
+<div class="title"><h2>Pedido de cliente</h2><button class="ghost" onclick="dlgPedido.close()">×</button></div>
+<label>Cliente</label><select id="oCli"></select>
+<label>Produto cadastrado</label><select id="oProdSel" onchange="pedidoSelecionaProduto()"></select>
+<label>Nome do produto</label><input id="oProd">
+<label>Código do produto</label><input id="oCod" placeholder="Código do produto">
+<label>Quantidade</label><input id="oQtd" type="number" value="1">
+<label>Observação</label><input id="oObs">
+<button class="mt" style="width:100%" onclick="savePedido()">Salvar pedido</button>
+</div></dialog>
+
+
+
+<dialog id="dlgCompraFornecedor"><div class="modal"><div class="title"><h2>Pedido ao fornecedor</h2><button class="ghost" onclick="dlgCompraFornecedor.close()">×</button></div>
+<label>Tipo de produto</label>
+<select id="sfTipo" onchange="toggleCompraProdutoNovo()">
+  <option value="cadastrado">Produto já cadastrado</option>
+  <option value="novo">Produto novo</option>
+</select>
+<div id="sfBoxCadastrado">
+  <label>Produto</label><select id="sfProd" onchange="preencherFornecedorCompra()"></select>
+</div>
+<div id="sfBoxNovo" class="hidden">
+  <div class="row">
+    <div><label>Nome do produto</label><input id="sfNovoNome" placeholder="Ex.: Perfume X 100 ml"></div>
+    <div><label>Marca</label><input id="sfNovoMarca" placeholder="Ex.: Natura"></div>
+  </div>
+  <label>Custo estimado por unidade</label><input id="sfNovoCusto" type="number" step=".01" min="0" placeholder="Opcional">
+</div>
+<div class="row"><div><label>Quantidade</label><input id="sfQtd" type="number" min="1" value="1"></div><div><label>Fornecedor</label><input id="sfFornecedor"></div></div>
+<label>Observação</label><input id="sfObs">
+<div class="notice mt">Se for um produto novo, ele não entra no catálogo agora. Quando a mercadoria chegar, o app poderá abrir o cadastro já preenchido.</div>
+<button class="mt" style="width:100%" onclick="saveCompraFornecedor()">Registrar pedido</button></div></dialog>
+
+<dialog id="dlgResetSeguro"><div class="modal">
+  <div class="title"><h2>⚠️ Apagar todos os dados</h2><button class="ghost" onclick="dlgResetSeguro.close()">×</button></div>
+  <div class="card" style="border-color:#d99">
+    <b>Esta ação é permanente.</b>
+    <div class="sub mt">Serão apagados produtos, estoque, clientes, vendas, pedidos e pagamentos deste aparelho.</div>
+  </div>
+  <label class="mt">Para confirmar, digite exatamente:</label>
+  <div style="font-weight:800;margin:6px 0">APAGAR TUDO</div>
+  <input id="resetConfirmacao" autocomplete="off" placeholder="Digite APAGAR TUDO" oninput="btnResetFinal.disabled=this.value!=='APAGAR TUDO'">
+  <div class="row mt">
+    <button class="ghost" onclick="dlgResetSeguro.close()">Cancelar</button>
+    <button id="btnResetFinal" disabled style="background:#a33" onclick="resetTudoConfirmado()">Apagar definitivamente</button>
+  </div>
+</div></dialog>
+<dialog id="dlgScanner"><div class="modal">
+  <div class="title"><h2>Leitor de código de barras</h2><button class="ghost" onclick="stopScanner()">×</button></div>
+  <div id="scanStatus" class="sub">Aponte a câmera para o código.</div>
+  <video id="scanVideo" playsinline muted></video><div id="html5Reader"></div>
+  <div class="scan-actions mt"><button type="button" class="ghost" onclick="stopScanner()">Cancelar</button></div>
+</div></dialog>
+
+<div id="lockScreen" class="lockScreen">
+  <div class="saasGate">
+    <div class="gateBrand"><img src="app-logo.png"><div><strong>Gestto</strong><span>SISTEMA DE GESTÃO</span></div></div>
+    <div id="gateLogin" class="gatePanel">
+      <div class="gateHero"><h2>Sua empresa sob controle,<br><em>onde estiver.</em></h2><p>Vendas, estoque, clientes e financeiro em um só lugar.</p></div>
+      <label>E-mail</label><input id="loginEmail" type="email" placeholder="seu@email.com">
+      <label>Senha</label><input id="loginSenha" type="password" placeholder="••••••••">
+      <button class="primaryWide" onclick="demoLogin()">Entrar</button>
+      <button class="outlineWide" onclick="showSignup()">Criar minha conta</button>
+      <div class="trialText">Teste grátis por 7 dias • Cancele quando quiser</div>
+    </div>
+    <div id="gateSignup" class="gatePanel hidden">
+      <div class="stepLabel">ETAPA 1 DE 2</div><h2>Crie sua conta</h2>
+      <div class="twoCol"><div><label>Nome</label><input id="sgNome" placeholder="Nome completo"></div><div><label>WhatsApp</label><input id="sgWhats" placeholder="11 99999-9999"></div></div>
+      <label>E-mail</label><input id="sgEmail" type="email" placeholder="seu@email.com">
+      <label>Senha</label><input id="sgSenha" type="password" placeholder="Crie uma senha">
+      <label>Nome da empresa</label><input id="sgEmpresa" placeholder="Minha empresa">
+      <label>Tipo de negócio</label><select id="sgTipo"><option>Comércio</option><option>Serviços</option><option>Comércio + Serviços</option></select>
+      <button class="primaryWide" onclick="showPlans()">Continuar</button><button class="textBtn" onclick="showLogin()">Já tenho conta</button>
+    </div>
+    <div id="gatePlans" class="gatePanel hidden">
+      <div class="stepLabel">ETAPA 2 DE 2</div><h2>Plano + pagamento</h2>
+      <div class="plans"><label class="plan"><input type="radio" name="plano" value="Essencial"><b>Essencial</b><strong>R$ 49,90</strong><small>1 usuário • vendas • estoque • clientes</small></label><label class="plan selected"><input type="radio" name="plano" value="Profissional" checked><b>Profissional</b><strong>R$ 89,90</strong><small>Até 5 usuários • financeiro • relatórios</small></label><label class="plan"><input type="radio" name="plano" value="Premium"><b>Premium</b><strong>R$ 149,90</strong><small>Mais usuários • recursos avançados</small></label></div>
+      <div class="payMethods"><label class="pay selected"><input type="radio" name="pay" checked> Pix</label><label class="pay"><input type="radio" name="pay"> Cartão</label></div>
+      <div class="demoNotice">V1 de testes: a cobrança real será conectada na próxima etapa.</div>
+      <button class="primaryWide" onclick="activateDemo()">Assinar e começar</button><button class="textBtn" onclick="showSignup()">Voltar</button>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/umd/zxing-browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script>
+const K='mayslla_perfumaria_v9_linha_produto';let db=JSON.parse(localStorage.getItem(K)||'{"products":[],"clients":[],"sales":[],"orders":[]}'),cartData=[],photo='';
+db.products=db.products||[];db.clients=db.clients||[];db.sales=db.sales||[];db.orders=db.orders||[];db.supplierOrders=db.supplierOrders||[];
+
+const APP_PIN='2628', AUTH_KEY='mayslla_app_autorizado_v1';
+
+function aplicarEstadoAcesso(){
+  let ok=localStorage.getItem(AUTH_KEY)==='1' || sessionStorage.getItem(AUTH_KEY)==='1';
+  lockScreen.classList.toggle('hidden',ok);
+  if(!ok)setTimeout(()=>pinAcesso.focus(),100);
+}
+function entrarApp(){
+  if(pinAcesso.value!==APP_PIN){pinErro.textContent='PIN incorreto.';pinAcesso.select();return}
+  if(lembrarPin.checked)localStorage.setItem(AUTH_KEY,'1');
+  else sessionStorage.setItem(AUTH_KEY,'1');
+  pinErro.textContent='';pinAcesso.value='';lockScreen.classList.add('hidden')
+}
+function bloquearApp(){
+  localStorage.removeItem(AUTH_KEY);sessionStorage.removeItem(AUTH_KEY);
+  lembrarPin.checked=false;pinAcesso.value='';lockScreen.classList.remove('hidden');setTimeout(()=>pinAcesso.focus(),100)
+}
+
+function fmtDataBR(d){
+  if(!d)return '-';let [y,m,dd]=d.split('-');return `${dd}/${m}/${y}`
+}
+
+async function entregarArquivo(blob,nome,tipo){
+  try{
+    let file=new File([blob],nome,{type:tipo||blob.type||'application/octet-stream'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})&&navigator.share){await navigator.share({files:[file],title:nome});return true}
+  }catch(e){if(e&&e.name==='AbortError')return false}
+  try{let u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=nome;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);return true}catch(e){return false}
+}
+function totalAbertoVenda(s){return (s.installments||[]).reduce((a,i)=>a+balance(i),0)}
+function waAgradecerPagamento(sid,valor,alocs,excedente){
+  let s=db.sales.find(x=>x.id===sid),c=db.clients.find(x=>x.id===s?.clientId);if(!s||!c)return;
+  let quitado=totalAbertoVenda(s)<.01;
+  let texto=`Olá, ${c.name}! 🌸\n\nRecebemos seu pagamento de ${money(valor)} na MA Perfumaria. 💗`;
+  if(alocs?.length===1)texto+=`\nReferente à ${alocs[0].n}ª parcela.`;
+  if(excedente>0.009)texto+=`\n\nComo o valor foi maior que a parcela atual, ${money(excedente)} foi abatido automaticamente nas parcelas seguintes.`;
+  if(quitado)texto+=`\n\n✨ Sua compra está totalmente quitada. Muito obrigada pela confiança e preferência!`;
+  else texto+=`\n\nMuito obrigada pela confiança e por escolher a MA Perfumaria! ✨`;
+  abrirWA(c,texto)
+}
+
+function phoneWA(c){
+  let n=String(c?.phone||'').replace(/\D/g,'');
+  if(n.startsWith('0'))n=n.slice(1);
+  if(n.length===10||n.length===11)n='55'+n;
+  return n
+}
+function abrirWA(cliente,texto){
+  let n=phoneWA(cliente);
+  if(!n)return msg('Cadastre o telefone do cliente com DDD');
+  window.open(`https://wa.me/${n}?text=${encodeURIComponent(texto)}`,'_blank')
+}
+function parcelasTexto(s){
+  let abertas=(s.installments||[]).map(i=>{
+    let status=balance(i)<.01?'PAGO':(st(i)[0]).toUpperCase();
+    return `${i.n}ª parcela — ${fmtDataBR(i.due)} — ${money(i.value)} — ${status}`;
+  });
+  return abertas.join('\n')
+}
+function waConfirmarVenda(sid){
+  let s=db.sales.find(x=>x.id===sid);if(!s)return;
+  let c=db.clients.find(x=>x.id===s.clientId);if(!c)return;
+  let itens=(s.items||[]).map(i=>`• ${i.qty}x ${i.name} — ${money(i.price*i.qty)}`).join('\n');
+  let texto=`Olá, ${c.name}! 🌸\n\nConfirmação da sua compra na MA Perfumaria:\n${itens}\n\nTotal: ${money(s.total)}\nForma de pagamento: ${s.form}`;
+  if(s.form==='Prazo')texto+=`\n\nDatas de pagamento:\n${parcelasTexto(s)}`;
+  texto+=`\n\nObrigada pela preferência! 💗`;
+  abrirWA(c,texto)
+}
+function waEnviarParcelas(sid){
+  let s=db.sales.find(x=>x.id===sid);if(!s)return;
+  let c=db.clients.find(x=>x.id===s.clientId);if(!c)return;
+  abrirWA(c,`Olá, ${c.name}! 🌸\n\nSegue o cronograma de pagamentos da sua compra na MA Perfumaria:\n\n${parcelasTexto(s)}\n\nTotal da compra: ${money(s.total)}.`)
+}
+function waCobrarParcela(sid,iid){
+  let s=db.sales.find(x=>x.id===sid),i=s?.installments?.find(x=>x.id===iid);if(!s||!i)return;
+  let c=db.clients.find(x=>x.id===s.clientId);if(!c)return;
+  let atrasada=i.due<today(),ab=balance(i);
+  let texto=`Olá, ${c.name}! 🌸\n\nPassando para lembrar ${atrasada?'que está pendente':'do vencimento de'} sua ${i.n}ª parcela da MA Perfumaria.\n\nVencimento: ${fmtDataBR(i.due)}\nValor em aberto: ${money(ab)}\n\nSe já realizou o pagamento, por favor desconsidere esta mensagem. 💗`;
+  abrirWA(c,texto)
+}
+function waCliente(cid){
+  let c=db.clients.find(x=>x.id===cid);if(c)abrirWA(c,`Olá, ${c.name}! 🌸\nAqui é da MA Perfumaria.`)
+}
+function waConfirmarPedido(oid){
+  let o=db.orders.find(x=>x.id===oid);if(!o)return;
+  let c=db.clients.find(x=>x.id===o.clientId);if(!c)return;
+  let texto=`Olá, ${c.name}! 🌸\n\nSeu pedido na MA Perfumaria foi registrado:\n• ${o.qty}x ${o.product}${o.code?`\nCódigo: ${o.code}`:''}${o.obs?`\nObservação: ${o.obs}`:''}\n\nData do pedido: ${fmtDataBR(o.date)}\nStatus: ${o.status}\n\nPedido confirmado. 💗`;
+  abrirWA(c,texto)
+}
+
+function atualizaParcelasEditor(preservar=true){
+  if(!document.getElementById('parcelasEditor'))return;
+  if(vForma.value!=='Prazo'){parcelasEditor.innerHTML='';return}
+  let n=Math.max(1,Math.min(36,+vParcelas.value||1));
+  let inicio=vVenc.value||vData.value||today();
+  let total=Math.max(0,cartData.reduce((a,x)=>a+x.price*x.qty,0)-(+vDesc.value||0));
+  let antigas=[...parcelasEditor.querySelectorAll('input[data-parcela-data]')].map(x=>x.value);
+  let base=total/n,html='<div class="installmentsBox"><b>Datas das parcelas</b><div class="sub mt">Geradas automaticamente. Você pode alterar qualquer data antes de finalizar.</div>';
+  for(let i=0;i<n;i++){
+    let val=i===n-1?total-base*(n-1):base;
+    let d=(preservar&&antigas[i])?antigas[i]:addMonths(inicio,i);
+    html+=`<div class="installmentRow"><b>${i+1}ª</b><input type="date" data-parcela-data="${i}" value="${d}"><span>${money(val)}</span></div>`;
+  }
+  html+='</div>';parcelasEditor.innerHTML=html
+}
+function datasParcelasEditadas(n,inicio){
+  let inputs=[...document.querySelectorAll('#parcelasEditor input[data-parcela-data]')];
+  return Array.from({length:n},(_,i)=>inputs[i]?.value||addMonths(inicio,i))
+}
+
+const money=v=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(+v||0),today=()=>new Date().toISOString().slice(0,10),id=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+function save(){localStorage.setItem(K,JSON.stringify(db));render()}function msg(s){toast.textContent=s;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1600)}
+function go(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(v).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.v===v));render()}
+function stock(p){return (p.lots||[]).reduce((a,l)=>a+l.qty,0)}function avgCost(p){let q=stock(p);return q?(p.lots||[]).reduce((a,l)=>a+l.qty*l.cost,0)/q:0}function avgPts(p){let q=stock(p);return q?(p.lots||[]).reduce((a,l)=>a+l.qty*l.points,0)/q:0}
+function foto(e){let f=e.target.files[0];if(!f)return;let r=new FileReader;r.onload=()=>{photo=r.result;pPrev.src=photo};r.readAsDataURL(f)}
+function calcProduto(){let c=+pCompraIni.value||0,v=+pPreco.value||0;pLucro.value=money(v-c);pMargem.value=c>0?(((v-c)/c)*100).toFixed(1)+'%':'0%'}
+function openProduto(x=''){
+  let p=db.products.find(z=>z.id===x),first=(p?.lots||[])[0];
+  pId.value=p?.id||'';
+  pNome.value=p?.name||'';
+  pMarca.value=p?.brand||'O Boticário';
+  pLinha.value=p?.line||'';
+  pCod.value=p?.code||'';
+  pBarcode.value=p?.barcode||'';
+  pCat.value=p?.cat||'';
+  pFornecedor.value=p?.supplier||'';
+  pStatus.value=p?.status||'Ativo';
+  pPreco.value=p?.price||'';
+  pMin.value=p?.min??1;
+  pObs.value=p?.obs||'';
+  pCompraIni.value=first?.cost??'';
+  pPontosIni.value=first?.points??'';
+  pQtdIni.value=p ? '' : 0;
+  pDataIni.value=first?.date||today();
+  pValIni.value=first?.expiry||'';
+  photo=p?.photo||'';
+  pPrev.src=photo;
+  calcProduto();
+  dlgProduto.showModal()
+}
+function saveProduto(){
+  if(!pNome.value.trim())return msg('Informe o nome');
+  let editing=!!pId.value;
+  let o={
+    id:pId.value||id(),
+    name:pNome.value.trim(),
+    brand:pMarca.value,
+    line:pLinha.value.trim(),
+    code:pCod.value.trim(),
+    barcode:pBarcode.value.trim(),
+    cat:pCat.value.trim(),
+    supplier:pFornecedor.value.trim(),
+    status:pStatus.value,
+    price:+pPreco.value||0,
+    min:+pMin.value||0,
+    obs:pObs.value.trim(),
+    photo,
+    lots:[]
+  };
+  let i=db.products.findIndex(x=>x.id===o.id);
+  if(i>=0){
+    o.lots=db.products[i].lots||[];
+    db.products[i]=o
+  }else{
+    let q=+pQtdIni.value||0;
+    if(q>0){
+      o.lots.push({
+        id:id(),
+        qty:q,
+        cost:+pCompraIni.value||0,
+        points:+pPontosIni.value||0,
+        date:pDataIni.value||today(),
+        expiry:pValIni.value,
+        obs:'Entrada inicial'
+      })
+    }
+    db.products.push(o)
+  }
+  dlgProduto.close();save();msg(editing?'Produto atualizado':'Produto cadastrado')
+}
+function openEntrada(){eProd.innerHTML=db.products.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');eData.value=today();eQtd.value=1;eCusto.value='';ePontos.value='';eVal.value='';dlgEntrada.showModal()}
+function saveEntrada(){let p=db.products.find(x=>x.id===eProd.value),q=+eQtd.value||0;if(!p||q<=0)return msg('Confira produto e quantidade');p.lots=p.lots||[];p.lots.push({id:id(),qty:q,cost:+eCusto.value||0,points:+ePontos.value||0,date:eData.value||today(),expiry:eVal.value,obs:eObs.value});dlgEntrada.close();save();msg('Entrada registrada')}
+function renderProdutos(){
+  let q=(qProd.value||'').toLowerCase(),a=db.products.filter(p=>[p.name,p.brand,p.line,p.code,p.barcode,p.cat,p.supplier].join(' ').toLowerCase().includes(q));
+  prodList.innerHTML=a.length?a.map(p=>{
+    let c=avgCost(p),luc=p.price-c,mg=c>0?((luc/c)*100):0;
+    return `<div class="card product"><img src="${p.photo||''}"><div class="info"><h3>${p.name}</h3><div class="sub">${p.brand}${p.line?' • Linha: '+p.line:''} • ${p.cat||'Sem categoria'} • cód. produto ${p.code||'-'} • barras ${p.barcode||'-'}</div><div class="sub">Estoque <b>${stock(p)}</b> • custo médio ${money(c)} • venda ${money(p.price)}</div><div class="sub">Lucro un. ${money(luc)} • margem ${mg.toFixed(1)}% • ${p.status||'Ativo'}</div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="ghost" onclick="openProduto('${p.id}')">Editar</button><button class="ghost" style="border-color:#d88;color:#a33" onclick="excluirProduto('${p.id}')">Excluir</button></div></div>`
+  }).join(''):'<div class="card sub">Cadastre o primeiro produto.</div>'
+}
+
+function excluirProduto(pid){
+  let p=db.products.find(x=>x.id===pid);
+  if(!p)return;
+  let vendas=db.sales.filter(s=>(s.items||[]).some(i=>i.pid===pid)).length;
+  let aviso=vendas
+    ? `O produto "${p.name}" aparece em ${vendas} venda(s) antiga(s). O histórico das vendas será mantido, mas o produto será removido do cadastro e do estoque.`
+    : `Excluir "${p.name}" do cadastro e remover seu estoque?`;
+  if(!confirm(aviso+'\n\nDeseja continuar?'))return;
+  db.products=db.products.filter(x=>x.id!==pid);
+  save();
+  msg('Produto excluído');
+}
+
+function openCliente(x=''){let c=db.clients.find(z=>z.id===x);cId.value=c?.id||'';cNome.value=c?.name||'';cTel.value=c?.phone||'';cObs.value=c?.obs||'';dlgCliente.showModal()}
+function saveCliente(){if(!cNome.value.trim())return msg('Informe o nome');let o={id:cId.value||id(),name:cNome.value.trim(),phone:cTel.value,obs:cObs.value};let i=db.clients.findIndex(x=>x.id===o.id);i>=0?db.clients[i]=o:db.clients.push(o);dlgCliente.close();save();msg('Cliente salvo')}
+function renderClientes(){let q=(qCli.value||'').toLowerCase(),a=db.clients.filter(c=>[c.name,c.phone].join(' ').toLowerCase().includes(q));cliList.innerHTML=a.length?a.map(c=>{let ss=db.sales.filter(s=>s.clientId===c.id),tot=ss.reduce((a,s)=>a+s.total,0),open=ss.reduce((a,s)=>a+(s.installments||[]).reduce((x,i)=>x+balance(i),0),0);return `<div class="card"><div class="row"><div><b>${c.name}</b><div class="sub">${c.phone||''}</div></div><div style="text-align:right"><div class="sub">Compras ${money(tot)}</div><b>Aberto ${money(open)}</b></div></div><div class="smallActions"><button class="ghost" onclick="openCliente('${c.id}')">Editar</button><button class="waBtn" onclick="waCliente('${c.id}')">WhatsApp</button></div></div>`}).join(''):'<div class="card sub">Nenhum cliente.</div>'}
+function selects(){
+  vCliente.innerHTML='<option value="">Selecione</option>'+db.clients.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  vProduto.innerHTML='<option value="">Selecione</option>'+db.products.filter(p=>stock(p)>0&&(p.status||'Ativo')==='Ativo').map(p=>`<option value="${p.id}">${p.name} (${stock(p)})</option>`).join('');
+  oCli.innerHTML='<option value="">Selecione</option>'+db.clients.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  oProdSel.innerHTML='<option value="">Selecione ou digite abaixo</option>'+db.products.map(p=>`<option value="${p.id}">${p.name}${p.code?' • cód. '+p.code:''}${p.barcode?' • barras '+p.barcode:''}</option>`).join('')
+}
+
+function buscarProdutoCodigo(){
+  let code=normalizaCodigo(vCodigo.value);
+  if(!code)return msg('Digite o código do produto');
+  let p=db.products.find(x=>normalizaCodigo(x.code)===code||normalizaCodigo(x.barcode)===code);
+  if(!p)return msg('Produto não encontrado');
+  if((p.status||'Ativo')!=='Ativo')return msg('Este produto está inativo');
+  if(stock(p)<=0)return msg('Produto sem estoque');
+  vProduto.value=p.id;
+  msg('Produto encontrado: '+p.name);
+}
+function preencheCodigoVenda(){
+  let p=db.products.find(x=>x.id===vProduto.value);
+  vCodigo.value=p?.code||p?.barcode||'';
+}
+
+function addCart(){let p=db.products.find(x=>x.id===vProduto.value),q=+vQtd.value||1;if(!p)return msg('Selecione produto');let c=cartData.find(x=>x.pid===p.id),used=c?c.qty:0;if(q+used>stock(p))return msg('Estoque insuficiente');c?c.qty+=q:cartData.push({pid:p.id,name:p.name,qty:q,price:p.price});renderCart()}
+function renderCart(){cart.innerHTML=cartData.map((x,n)=>`<tr><td>${x.name}<div class="sub">Cód. ${db.products.find(p=>p.id===x.pid)?.code||'-'} • Barras ${db.products.find(p=>p.id===x.pid)?.barcode||'-'}</div></td><td>${x.qty}</td><td>${money(x.price*x.qty)}</td><td><button class="ghost" onclick="cartData.splice(${n},1);renderCart()">×</button></td></tr>`).join('');let t=Math.max(0,cartData.reduce((a,x)=>a+x.price*x.qty,0)-(+vDesc.value||0));vTotal.textContent=money(t);atualizaParcelasEditor()}
+function consume(p,q){let lots=(p.lots||[]).filter(l=>l.qty>0).sort((a,b)=>(a.expiry||'9999').localeCompare(b.expiry||'9999')),out=[];for(let l of lots){if(q<=0)break;let n=Math.min(q,l.qty);out.push({lotId:l.id,qty:n,cost:l.cost,points:l.points,expiry:l.expiry});l.qty-=n;q-=n}return out}
+function addMonths(d,n){let x=new Date(d+'T12:00:00');x.setMonth(x.getMonth()+n);return x.toISOString().slice(0,10)}
+function finalVenda(){
+  if(!vCliente.value||!cartData.length)return msg('Informe cliente e produtos');
+  let total=Math.max(0,cartData.reduce((a,x)=>a+x.price*x.qty,0)-(+vDesc.value||0)),
+      n=Math.max(1,+vParcelas.value||1),items=[];
+  for(let x of cartData){let p=db.products.find(z=>z.id===x.pid);items.push({...x,consumed:consume(p,x.qty)})}
+  let inst=[],base=total/n,inicio=vVenc.value||vData.value||today(),datas=datasParcelasEditadas(n,inicio);
+  for(let i=0;i<n;i++){
+    let val=i===n-1?total-base*(n-1):base;
+    inst.push({id:id(),n:i+1,due:datas[i],value:val,payments:[]})
+  }
+  if(vForma.value!=='Prazo')inst.forEach(i=>i.payments=[{id:id(),date:vData.value||today(),value:i.value,form:vForma.value}]);
+  let venda={id:id(),clientId:vCliente.value,date:vData.value||today(),form:vForma.value,discount:+vDesc.value||0,total,items,installments:inst};
+  db.sales.push(venda);cartData=[];vDesc.value=0;vCodigo.value='';save();renderCart();
+  msg('Venda registrada');
+  setTimeout(()=>{if(confirm('Deseja enviar a confirmação da compra pelo WhatsApp?'))waConfirmarVenda(venda.id)},250)
+}
+function balance(i){return Math.max(0,i.value-(i.payments||[]).reduce((a,p)=>a+p.value,0))}function st(i){let b=balance(i);if(b<.01)return ['Pago','ok'];if(new Date(i.due+'T23:59')<new Date())return ['Atrasado','bad'];if((i.payments||[]).length)return ['Parcial','warn'];return ['Em aberto','warn']}
+function receivables(){let a=[];db.sales.forEach(s=>(s.installments||[]).forEach(i=>{if(balance(i)>.009)a.push({s,i})}));a.sort((x,y)=>x.i.due.localeCompare(y.i.due));recList.innerHTML=a.length?a.map(({s,i})=>{let c=db.clients.find(x=>x.id===s.clientId),z=st(i);return `<tr><td>${c?.name||'-'}</td><td>${i.n}</td><td>${fmtDataBR(i.due)}</td><td>${money(balance(i))}</td><td><span class="pill ${z[1]}">${z[0]}</span></td><td><div class="smallActions"><button onclick="openPg('${s.id}','${i.id}')">Receber</button><button class="waBtn" onclick="waCobrarParcela('${s.id}','${i.id}')">Cobrar</button></div></td></tr>`}).join(''):'<tr><td colspan="6">Nada em aberto.</td></tr>'}
+function openPg(sid,iid){
+  pgId.value=sid+'|'+iid;let s=db.sales.find(x=>x.id===sid),i=s.installments.find(x=>x.id===iid),idx=s.installments.findIndex(x=>x.id===iid);
+  let limite=s.installments.slice(idx).reduce((a,z)=>a+balance(z),0);
+  pgValor.value=balance(i).toFixed(2);pgData.value=today();pgLimite.textContent=`Parcela atual: ${money(balance(i))}. Você pode receber até ${money(limite)} e o excedente será abatido nas próximas parcelas.`;dlgPg.showModal()
+}
+function savePg(){
+  let [sid,iid]=pgId.value.split('|'),s=db.sales.find(x=>x.id===sid),idx=s.installments.findIndex(x=>x.id===iid),v=+pgValor.value||0;if(!s||idx<0||v<=0)return msg('Valor inválido');
+  let limite=s.installments.slice(idx).reduce((a,z)=>a+balance(z),0);if(v>limite+.01)return msg('Valor maior que o saldo das parcelas restantes');
+  let atualAntes=balance(s.installments[idx]),rest=v,alocs=[],gid=id();
+  for(let j=idx;j<s.installments.length&&rest>.009;j++){
+    let i=s.installments[j],ab=balance(i);if(ab<=.009)continue;let x=Math.min(rest,ab);i.payments=i.payments||[];i.payments.push({id:id(),groupId:gid,date:pgData.value||today(),value:x,form:pgForma.value});alocs.push({n:i.n,value:x});rest-=x
+  }
+  let exced=Math.max(0,v-atualAntes);dlgPg.close();save();msg(exced>.009?'Pagamento salvo e excedente abatido':'Pagamento salvo');
+  setTimeout(()=>{if(confirm('Deseja enviar uma mensagem de agradecimento pelo WhatsApp?'))waAgradecerPagamento(sid,v,alocs,exced)},250)
+}
+function openPedido(){oProdSel.value='';oProd.value='';oCod.value='';oQtd.value=1;oObs.value='';dlgPedido.showModal()}
+function pedidoSelecionaProduto(){let p=db.products.find(x=>x.id===oProdSel.value);if(p){oProd.value=p.name;oCod.value=p.code||''}}
+function savePedido(){
+  if(!oCli.value||!oProd.value.trim())return msg('Informe cliente e produto');
+  db.orders.push({id:id(),clientId:oCli.value,product:oProd.value.trim(),code:oCod.value.trim(),qty:+oQtd.value||1,obs:oObs.value,status:'Pedido recebido',date:today(),deliveredDate:''});
+  let oid=db.orders[db.orders.length-1].id;dlgPedido.close();save();msg('Pedido salvo');setTimeout(()=>{if(confirm('Deseja enviar a confirmação do pedido pelo WhatsApp?'))waConfirmarPedido(oid)},250)
+}
+const orderFlow=['Pedido recebido','Aguardando produto','Produto disponível','Cliente avisado','Entregue'];
+function pedidoProximoStatus(oid){let o=db.orders.find(x=>x.id===oid);if(!o)return;let i=orderFlow.indexOf(o.status);if(i<0)i=0;o.status=orderFlow[Math.min(i+1,orderFlow.length-1)];if(o.status==='Entregue')o.deliveredDate=today();save();if(o.status==='Produto disponível'){let c=db.clients.find(x=>x.id===o.clientId);if(c&&confirm('Produto disponível. Deseja avisar o cliente pelo WhatsApp?')){abrirWA(c,`Olá, ${c.name}! 🌸\n\nSeu produto ${o.product} já está disponível na MA Perfumaria. 💗\nSe desejar, podemos reservar para você.`);o.status='Cliente avisado';save()}}}
+function pedidoReabrir(oid){let o=db.orders.find(x=>x.id===oid);if(o){o.status='Pedido recebido';o.deliveredDate='';save()}}
+function renderPedidos(){
+  let ativos=db.orders.filter(o=>o.status!=='Entregue'&&o.status!=='Finalizado');
+  pedList.innerHTML=ativos.length?[...ativos].reverse().map(o=>{let c=db.clients.find(x=>x.id===o.clientId),p=db.products.find(x=>x.code&&x.code===o.code),disp=p?stock(p):0;return `<div class="card"><div class="row"><div><b>${o.product}</b><div class="sub">${c?.name||'-'} • ${o.qty} un. • ${fmtDataBR(o.date)}</div><div class="sub">Código: ${o.code||'-'}${disp>0?' • ✅ '+disp+' em estoque':''}</div></div><span class="orderStatus">${o.status||'Pedido recebido'}</span></div>${o.obs?`<div class="sub mt">${o.obs}</div>`:''}<div class="smallActions"><button onclick="pedidoProximoStatus('${o.id}')">Avançar status</button><button class="waBtn" onclick="waConfirmarPedido('${o.id}')">WhatsApp</button><button class="ghost" onclick="marcarPedidoEntregue('${o.id}')">Entregue</button></div></div>`}).join(''):'<div class="card sub">Nenhum pedido ativo.</div>';
+  let hist=db.orders.filter(o=>o.status==='Entregue'||o.status==='Finalizado');
+  pedHistory.innerHTML=hist.length?[...hist].reverse().map(o=>{let c=db.clients.find(x=>x.id===o.clientId);return `<div class="card historyCard"><b>${o.product}</b><div class="sub">${c?.name||'-'} • ${o.qty} un.</div><div class="sub">Pedido ${fmtDataBR(o.date)} • Entregue ${fmtDataBR(o.deliveredDate||o.date)}</div><div class="smallActions"><span class="pill ok">Entregue</span><button class="ghost" onclick="pedidoReabrir('${o.id}')">Reabrir</button></div></div>`}).join(''):'<div class="card sub">Histórico vazio.</div>';
+  renderComprasFornecedor()
+}
+function marcarPedidoEntregue(oid){let o=db.orders.find(x=>x.id===oid);if(o){o.status='Entregue';o.deliveredDate=today();save();msg('Pedido movido para o histórico')}}
+function showPedidosTab(tab){['ativos','compras','historico'].forEach(x=>{document.getElementById('ped'+(x==='ativos'?'Ativos':x==='compras'?'Compras':'Historico')).classList.toggle('hidden',x!==tab)});tabPedAtivos.classList.toggle('active',tab==='ativos');tabPedCompras.classList.toggle('active',tab==='compras');tabPedHist.classList.toggle('active',tab==='historico')}
+function toggleCompraProdutoNovo(){
+  let novo=sfTipo.value==='novo';
+  sfBoxNovo.classList.toggle('hidden',!novo);
+  sfBoxCadastrado.classList.toggle('hidden',novo);
+  if(!novo)preencherFornecedorCompra()
+}
+function preencherFornecedorCompra(){
+  let p=db.products.find(x=>x.id===sfProd.value);
+  if(p)sfFornecedor.value=p.supplier||''
+}
+function openCompraFornecedor(pid=''){
+  sfProd.innerHTML=db.products.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  sfTipo.value=pid?'cadastrado':(db.products.length?'cadastrado':'novo');
+  sfProd.value=pid||db.products[0]?.id||'';
+  sfQtd.value=1;sfNovoNome.value='';sfNovoMarca.value='';sfNovoCusto.value='';sfObs.value='';
+  sfFornecedor.value='';
+  toggleCompraProdutoNovo();
+  if(pid)preencherFornecedorCompra();
+  dlgCompraFornecedor.showModal()
+}
+function saveCompraFornecedor(){
+  let isNovo=sfTipo.value==='novo';
+  let p=isNovo?null:db.products.find(x=>x.id===sfProd.value);
+  if(!isNovo&&!p)return msg('Selecione o produto');
+  if(isNovo&&!sfNovoNome.value.trim())return msg('Informe o nome do produto novo');
+  db.supplierOrders.push({
+    id:id(),
+    productId:p?.id||'',
+    productName:isNovo?sfNovoNome.value.trim():p.name,
+    brand:isNovo?sfNovoMarca.value.trim():(p?.brand||''),
+    estimatedCost:isNovo?(+sfNovoCusto.value||0):avgCost(p),
+    qty:+sfQtd.value||1,
+    supplier:sfFornecedor.value.trim(),
+    obs:sfObs.value.trim(),
+    status:'Pedido feito',
+    date:today(),
+    isNewProduct:isNovo
+  });
+  dlgCompraFornecedor.close();save();msg('Pedido ao fornecedor registrado')
+}
+function cadastrarProdutoDaCompra(idp){
+  let o=db.supplierOrders.find(x=>x.id===idp);if(!o)return;
+  openProduto();
+  pNome.value=o.productName||'';
+  if(o.brand){
+    let op=[...pMarca.options].find(x=>x.value===o.brand);
+    pMarca.value=op?o.brand:'Outra'
+  }
+  pFornecedor.value=o.supplier||'';
+  pCompraIni.value=o.estimatedCost||'';
+  pQtdIni.value=o.qty||1;
+  pDataIni.value=today();
+  pObs.value=[pObs.value,o.obs,`Originado do pedido ao fornecedor de ${fmtDataBR(o.date)}`].filter(Boolean).join(' • ');
+  calcProduto()
+}
+function supplierNext(idp){
+  let o=db.supplierOrders.find(x=>x.id===idp);if(!o)return;
+  if(o.status==='Pedido feito')o.status='Aguardando chegada';
+  else if(o.status==='Aguardando chegada')o.status='Recebido';
+  else o.status='Pedido feito';
+  save();
+  if(o.status==='Recebido'){
+    if(o.productId){
+      let p=db.products.find(x=>x.id===o.productId);
+      if(p&&confirm('Mercadoria recebida. Deseja registrar a entrada no estoque agora?')){
+        openEntrada();eProd.value=p.id;eQtd.value=o.qty;eCusto.value=o.estimatedCost||''
+      }
+    }else if(confirm('Mercadoria recebida. Deseja cadastrar este produto no catálogo e dar entrada no estoque agora?')){
+      cadastrarProdutoDaCompra(o.id)
+    }
+  }
+}
+function renderComprasFornecedor(){
+  let low=db.products.filter(p=>(p.status||'Ativo')==='Ativo'&&stock(p)<= (+p.min||0));
+  purchaseSuggestions.innerHTML=low.length?low.map(p=>`<div class="card"><b>${p.name}</b><div class="sub">Estoque atual: ${stock(p)} • mínimo: ${p.min||0}</div><button class="ghost mt" onclick="openCompraFornecedor('${p.id}')">Adicionar à compra</button></div>`).join(''):'<div class="card sub">Nenhuma reposição necessária pelo estoque mínimo.</div>';
+  supplierList.innerHTML=db.supplierOrders.length?[...db.supplierOrders].reverse().map(o=>{
+    let p=db.products.find(x=>x.id===o.productId),nome=p?.name||o.productName||'Produto novo';
+    return `<div class="card"><div class="row"><div><b>${nome}</b><div class="sub">${o.brand||p?.brand||''}${o.isNewProduct?' • Novo produto':''}</div><div class="sub">${o.qty} un. • ${o.supplier||'Fornecedor não informado'} • ${fmtDataBR(o.date)}</div>${o.estimatedCost?`<div class="sub">Custo estimado: ${money(o.estimatedCost)} / un.</div>`:''}</div><span class="orderStatus">${o.status}</span></div><div class="smallActions"><button class="ghost" onclick="supplierNext('${o.id}')">Avançar</button>${!o.productId&&o.status==='Recebido'?`<button onclick="cadastrarProdutoDaCompra('${o.id}')">Cadastrar produto</button>`:''}</div></div>`
+  }).join(''):'<div class="card sub">Nenhum pedido ao fornecedor.</div>'
+}
+function renderCatalogo(){
+  let brands=[...new Set(db.products.map(p=>p.brand).filter(Boolean))].sort(),cur=catMarca.value;if(catMarca.options.length<=1){catMarca.innerHTML='<option value="">Todas as marcas</option>'+brands.map(b=>`<option>${b}</option>`).join('');catMarca.value=cur}
+  let q=(catBusca.value||'').toLowerCase(),marca=catMarca.value,a=db.products.filter(p=>stock(p)>0&&(p.status||'Ativo')==='Ativo'&&(!marca||p.brand===marca)&&[p.name,p.brand,p.line,p.category].join(' ').toLowerCase().includes(q));
+  catList.innerHTML=a.length?a.map(p=>`<div class="card catalogItem"><input class="catalogCheck" type="checkbox" data-catpid="${p.id}" checked><img src="${p.photo||''}"><div class="info"><h3>${p.name}</h3><div class="sub">${p.brand||''}${p.line?' • '+p.line:''}</div><b>${money(p.price)}</b><div class="sub">Pronta entrega</div></div></div>`).join(''):'<div class="card sub">Sem produtos disponíveis.</div>'
+}
+function selecionarCatalogo(v){document.querySelectorAll('[data-catpid]').forEach(x=>x.checked=v)}
+async function gerarCatalogoPDF(todos){
+  let produtos=todos?db.products.filter(p=>stock(p)>0&&(p.status||'Ativo')==='Ativo'):[...document.querySelectorAll('[data-catpid]:checked')].map(x=>db.products.find(p=>p.id===x.dataset.catpid)).filter(Boolean);if(!produtos.length)return msg('Selecione ao menos um produto');
+  if(!(window.jspdf&&window.jspdf.jsPDF))return gerarCatalogoImpressao(produtos);
+  try{let {jsPDF}=window.jspdf,doc=new jsPDF({unit:'mm',format:'a4'}),W=210,margin=12,y=17;doc.setFont('helvetica','bold');doc.setFontSize(20);doc.text('MA PERFUMARIA',W/2,y,{align:'center'});y+=7;doc.setFontSize(10);doc.setFont('helvetica','normal');doc.text('CATÁLOGO PRONTA ENTREGA',W/2,y,{align:'center'});y+=10;
+    for(let [idx,p] of produtos.entries()){if(y>260){doc.addPage();y=18}if(p.photo){try{doc.addImage(p.photo,'JPEG',margin,y,32,32,'p'+idx,'FAST')}catch(e){try{doc.addImage(p.photo,'PNG',margin,y,32,32,'p'+idx,'FAST')}catch(e2){}}}doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text(String(p.name||'Produto').slice(0,40),margin+38,y+7);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text(String([p.brand,p.line].filter(Boolean).join(' • ')).slice(0,50),margin+38,y+14);doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text(money(p.price),margin+38,y+22);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.text('Pronta entrega',margin+38,y+29);doc.setDrawColor(235);doc.line(margin,y+35,W-margin,y+35);y+=40}
+    doc.setFontSize(8);doc.text('Valores e disponibilidade sujeitos à confirmação.',W/2,287,{align:'center'});let blob=doc.output('blob');await entregarArquivo(blob,'catalogo_pronta_entrega_MA_Perfumaria.pdf','application/pdf');msg('Catálogo PDF gerado')
+  }catch(e){gerarCatalogoImpressao(produtos)}
+}
+function gerarCatalogoImpressao(produtos){let w=window.open('','_blank');if(!w)return msg('Permita pop-ups para gerar o catálogo');w.document.write(`<html><head><title>Catálogo MA Perfumaria</title><style>body{font-family:Arial;padding:24px}h1{text-align:center}.p{display:flex;gap:15px;border-bottom:1px solid #ddd;padding:14px 0}.p img{width:100px;height:100px;object-fit:cover}.price{font-size:20px;font-weight:bold}</style></head><body><h1>MA PERFUMARIA</h1><h3 style="text-align:center">Pronta Entrega</h3>${produtos.map(p=>`<div class="p"><img src="${p.photo||''}"><div><b>${p.name}</b><p>${p.brand||''} ${p.line||''}</p><div class="price">${money(p.price)}</div><p>Pronta entrega</p></div></div>`).join('')}<script>setTimeout(()=>print(),700)<\/script></body></html>`);w.document.close();msg('Use “Salvar como PDF” na tela de impressão')}
+function renderSales(){salesList.innerHTML=[...db.sales].reverse().map(s=>{let c=db.clients.find(x=>x.id===s.clientId);return `<tr><td>${fmtDataBR(s.date)}</td><td>${c?.name||'-'}</td><td>${money(s.total)}</td><td>${s.form}</td><td><div class="smallActions"><button class="waBtn" onclick="waConfirmarVenda('${s.id}')">Confirmar</button>${s.form==='Prazo'?`<button class="ghost" onclick="waEnviarParcelas('${s.id}')">Parcelas</button>`:''}</div></td></tr>`}).join('')}
+function saleProfit(s){
+  return s.items.reduce((a,i)=>a+(i.consumed||[]).reduce((x,c)=>x+(i.price-c.cost)*c.qty,0),0)-(s.discount||0)
+}
+function dashboard(){
+  let ym=today().slice(0,7),ss=db.sales.filter(s=>s.date.startsWith(ym));
+  let hojeV=db.sales.filter(s=>s.date===today()).reduce((a,s)=>a+s.total,0);
+  if(document.getElementById('dHoje')) dHoje.textContent=money(hojeV);
+  if(document.getElementById('dSaudacao')){
+    let hr=new Date().getHours(),saud=hr<12?'Bom dia':hr<18?'Boa tarde':'Boa noite';
+    dSaudacao.textContent=saud+'! Aqui está o resumo da perfumaria.';
+  }
+  let fat=ss.reduce((a,s)=>a+s.total,0);
+  let luc=ss.reduce((a,s)=>a+saleProfit(s),0);
+  let pts=ss.reduce((a,s)=>a+s.items.reduce((x,i)=>x+(i.consumed||[]).reduce((y,c)=>y+c.points*c.qty,0),0),0);
+  let rec=0,recMes=0;
+  db.sales.forEach(s=>(s.installments||[]).forEach(i=>{
+    rec+=balance(i);
+    (i.payments||[]).forEach(p=>{if((p.date||'').startsWith(ym))recMes+=p.value})
+  }));
+  let estQtd=db.products.reduce((a,p)=>a+stock(p),0);
+  let estVal=db.products.reduce((a,p)=>a+(p.lots||[]).reduce((x,l)=>x+l.qty*l.cost,0),0);
+
+  dVendas.textContent=money(fat);
+  dLucro.textContent=money(luc);
+  dReceber.textContent=money(rec);
+  dRecebidoMes.textContent=money(recMes);
+  dTicket.textContent=money(ss.length?fat/ss.length:0);
+  dEstoqueQtd.textContent=estQtd;
+  dEstoqueValor.textContent=money(estVal);
+  dPontos.textContent=pts.toFixed(0);
+
+  let prodMap={};
+  ss.forEach(s=>s.items.forEach(i=>{
+    let z=prodMap[i.pid]||(prodMap[i.pid]={name:i.name,qty:0,total:0});
+    z.qty+=i.qty; z.total+=i.qty*i.price
+  }));
+  let topP=Object.values(prodMap).sort((a,b)=>b.qty-a.qty)[0];
+  dTopProduto.innerHTML=topP?`<b>${topP.name}</b><br>${topP.qty} unidades • ${money(topP.total)}`:'Sem vendas no mês.';
+
+  let cliMap={};
+  ss.forEach(s=>{
+    let c=db.clients.find(x=>x.id===s.clientId),z=cliMap[s.clientId]||(cliMap[s.clientId]={name:c?.name||'-',total:0,count:0});
+    z.total+=s.total;z.count++
+  });
+  let topC=Object.values(cliMap).sort((a,b)=>b.total-a.total)[0];
+  dTopCliente.innerHTML=topC?`<b>${topC.name}</b><br>${topC.count} compras • ${money(topC.total)}`:'Sem vendas no mês.';
+
+  let low=db.products.filter(p=>stock(p)<=p.min);
+  dBaixo.innerHTML=low.length?low.slice(0,6).map(p=>`${p.name}: <b>${stock(p)}</b> un.`).join('<br>'):'Tudo certo.';
+
+  let now=new Date(),ex=[];
+  db.products.forEach(p=>(p.lots||[]).forEach(l=>{
+    if(l.qty>0&&l.expiry){
+      let days=Math.ceil((new Date(l.expiry+'T12:00')-now)/86400000);
+      if(days<=90)ex.push({p,l,days})
+    }
+  }));
+  ex.sort((a,b)=>a.days-b.days);
+  dValidade.innerHTML=ex.length?ex.slice(0,6).map(x=>`${x.p.name}: <b>${x.days<0?'vencido':x.days+' dias'}</b>`).join('<br>'):'Nenhum vencimento em 90 dias.';
+
+  let prox=[];
+  db.sales.forEach(s=>(s.installments||[]).forEach(i=>{if(balance(i)>.009)prox.push({s,i})}));
+  prox.sort((a,b)=>a.i.due.localeCompare(b.i.due));
+  dProxReceber.innerHTML=prox.length?prox.slice(0,5).map(({s,i})=>{
+    let c=db.clients.find(x=>x.id===s.clientId),z=st(i);
+    return `<tr><td>${c?.name||'-'}</td><td>${i.due}</td><td>${money(balance(i))}</td><td><span class="pill ${z[1]}">${z[0]}</span></td></tr>`
+  }).join(''):'<tr><td colspan="4">Nada a receber.</td></tr>'
+}
+function renderRelatorioVendas(){
+  let ini=rIni.value||'0000-01-01',fim=rFim.value||'9999-12-31';
+  let ss=db.sales.filter(s=>s.date>=ini&&s.date<=fim);
+  let fat=ss.reduce((a,s)=>a+s.total,0),luc=ss.reduce((a,s)=>a+saleProfit(s),0);
+  rFat.textContent=money(fat);rLuc.textContent=money(luc);rQtdVendas.textContent=ss.length;rTicket.textContent=money(ss.length?fat/ss.length:0);
+
+  rVendasList.innerHTML=ss.length?[...ss].reverse().map(s=>{
+    let c=db.clients.find(x=>x.id===s.clientId),it=s.items.reduce((a,i)=>a+i.qty,0);
+    return `<tr><td>${s.date}</td><td>${c?.name||'-'}</td><td>${it}</td><td>${money(s.total)}</td><td>${money(saleProfit(s))}</td><td>${s.form}</td></tr>`
+  }).join(''):'<tr><td colspan="6">Nenhuma venda no período.</td></tr>';
+
+  let pmap={};
+  ss.forEach(s=>s.items.forEach(i=>{
+    let p=db.products.find(x=>x.id===i.pid);
+    let z=pmap[i.pid]||(pmap[i.pid]={name:i.name,code:p?.code||'',qty:0,total:0});
+    z.qty+=i.qty;z.total+=i.qty*i.price
+  }));
+  let pr=Object.values(pmap).sort((a,b)=>b.qty-a.qty);
+  rRankProdutos.innerHTML=pr.length?pr.map((p,n)=>`<tr><td>${n+1}</td><td>${p.name}</td><td>${p.code||'-'}</td><td>${p.qty}</td><td>${money(p.total)}</td></tr>`).join(''):'<tr><td colspan="5">Sem dados.</td></tr>';
+
+  let cmap={};
+  ss.forEach(s=>{
+    let c=db.clients.find(x=>x.id===s.clientId);
+    let z=cmap[s.clientId]||(cmap[s.clientId]={name:c?.name||'-',count:0,total:0});
+    z.count++;z.total+=s.total
+  });
+  let cr=Object.values(cmap).sort((a,b)=>b.total-a.total);
+  rRankClientes.innerHTML=cr.length?cr.map((c,n)=>`<tr><td>${n+1}</td><td>${c.name}</td><td>${c.count}</td><td>${money(c.total)}</td></tr>`).join(''):'<tr><td colspan="4">Sem dados.</td></tr>'
+}
+
+function periodoRelatorio(tipo){
+  let agora=new Date(),ini,fim;
+  function fmt(d){let y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),da=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${da}`}
+  if(tipo==='diario'){ini=fim=fmt(agora)}
+  else if(tipo==='semanal'){
+    let d=new Date(agora),dia=d.getDay(),aj=dia===0?-6:1-dia;
+    d.setDate(d.getDate()+aj);ini=fmt(d);
+    let f=new Date(d);f.setDate(f.getDate()+6);fim=fmt(f)
+  }else{
+    ini=`${agora.getFullYear()}-${String(agora.getMonth()+1).padStart(2,'0')}-01`;
+    fim=fmt(new Date(agora.getFullYear(),agora.getMonth()+1,0))
+  }
+  return {ini,fim}
+}
+function pdfTextSafe(s){
+  return String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\x20-\x7E]/g,'?').replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)')
+}
+function criarPDFTexto(linhas,nome){
+  const pageW=595,pageH=842,margin=40,lineH=13,maxLines=56;
+  let pages=[];
+  for(let i=0;i<linhas.length;i+=maxLines)pages.push(linhas.slice(i,i+maxLines));
+  let objects=[],pageIds=[],contentIds=[],fontId=3;
+  objects[1]='<< /Type /Catalog /Pages 2 0 R >>';
+  objects[2]='';
+  objects[fontId]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>';
+  let next=4;
+  pages.forEach((pg,idx)=>{
+    let pageId=next++,contentId=next++;pageIds.push(pageId);contentIds.push(contentId);
+    let y=pageH-margin,stream='BT\n/F1 10 Tf\n';
+    pg.forEach((ln,n)=>{
+      let size=n===0&&idx===0?15:10;
+      stream+=`/F1 ${size} Tf 1 0 0 1 ${margin} ${y} Tm (${pdfTextSafe(ln)}) Tj\n`;
+      y-=lineH
+    });
+    stream+='ET';
+    objects[contentId]=`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`;
+    objects[pageId]=`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /Font << /F1 ${fontId} 0 R >> >> /Contents ${contentId} 0 R >>`
+  });
+  objects[2]=`<< /Type /Pages /Kids [${pageIds.map(x=>x+' 0 R').join(' ')}] /Count ${pageIds.length} >>`;
+  let pdf='%PDF-1.4\n',offsets=[0];
+  for(let i=1;i<objects.length;i++){offsets[i]=pdf.length;pdf+=`${i} 0 obj\n${objects[i]}\nendobj\n`}
+  let xref=pdf.length;pdf+=`xref\n0 ${objects.length}\n0000000000 65535 f \n`;
+  for(let i=1;i<objects.length;i++)pdf+=String(offsets[i]).padStart(10,'0')+' 00000 n \n';
+  pdf+=`trailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  let blob=new Blob([pdf],{type:'application/pdf'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=nome;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)
+}
+function gerarRelatorioPDF(tipo){
+  let {ini,fim}=periodoRelatorio(tipo),ss=db.sales.filter(s=>s.date>=ini&&s.date<=fim);
+  let fat=ss.reduce((a,s)=>a+s.total,0),luc=ss.reduce((a,s)=>a+saleProfit(s),0);
+  let recebido=0,aberto=0;
+  db.sales.forEach(s=>(s.installments||[]).forEach(i=>{
+    (i.payments||[]).forEach(p=>{if(p.date>=ini&&p.date<=fim)recebido+=p.value});
+    if(i.due>=ini&&i.due<=fim)aberto+=balance(i)
+  }));
+  let titulo=tipo==='diario'?'DIARIO':tipo==='semanal'?'SEMANAL':'MENSAL';
+  let linhas=[
+    'MA PERFUMARIA - RELATORIO '+titulo,
+    'Periodo: '+ini+' a '+fim,
+    '',
+    'RESUMO',
+    'Faturamento: '+money(fat),
+    'Lucro estimado: '+money(luc),
+    'Vendas: '+ss.length,
+    'Ticket medio: '+money(ss.length?fat/ss.length:0),
+    'Recebido no periodo: '+money(recebido),
+    'A receber com vencimento no periodo: '+money(aberto),
+    '',
+    'VENDAS'
+  ];
+  if(!ss.length)linhas.push('Nenhuma venda no periodo.');
+  [...ss].sort((a,b)=>a.date.localeCompare(b.date)).forEach((s,n)=>{
+    let c=db.clients.find(x=>x.id===s.clientId),q=(s.items||[]).reduce((a,i)=>a+i.qty,0);
+    linhas.push(`${n+1}. ${s.date} | ${c?.name||'-'} | ${q} item(ns) | ${money(s.total)} | ${s.form}`)
+  });
+  let pmap={};
+  ss.forEach(s=>(s.items||[]).forEach(i=>{
+    let z=pmap[i.pid]||(pmap[i.pid]={name:i.name,qty:0,total:0});z.qty+=i.qty;z.total+=i.qty*i.price
+  }));
+  linhas.push('','PRODUTOS MAIS VENDIDOS');
+  let rank=Object.values(pmap).sort((a,b)=>b.qty-a.qty);
+  if(!rank.length)linhas.push('Sem dados.');
+  rank.slice(0,20).forEach((p,n)=>linhas.push(`${n+1}. ${p.name} - ${p.qty} un. - ${money(p.total)}`));
+  linhas.push('','Gerado em: '+new Date().toLocaleString('pt-BR'));
+  criarPDFTexto(linhas,`relatorio_${tipo}_MA_${ini}_${fim}.pdf`);
+  msg('PDF gerado')
+}
+
+function reports(){
+  let est=db.products.reduce((a,p)=>a+(p.lots||[]).reduce((x,l)=>x+l.qty*l.cost,0),0);
+  let pts=db.products.reduce((a,p)=>a+(p.lots||[]).reduce((x,l)=>x+l.qty*l.points,0),0);
+  rEst.textContent=money(est);rPts.textContent=pts.toFixed(0);
+  renderRelatorioVendas()
+}
+function abrirResetSeguro(){
+  resetConfirmacao.value='';
+  btnResetFinal.disabled=true;
+  dlgResetSeguro.showModal()
+}
+function resetTudoConfirmado(){
+  if(resetConfirmacao.value!=='APAGAR TUDO')return;
+  // Mantém apenas a autorização/PIN do aparelho. Toda a base operacional é recriada vazia.
+  db={products:[],clients:[],sales:[],orders:[],supplierOrders:[]};
+  cartData=[];photo='';
+  try{localStorage.removeItem(K)}catch(e){}
+  try{localStorage.setItem(K,JSON.stringify(db))}catch(e){}
+  dlgResetSeguro.close();
+  msg('Base zerada com sucesso. Reiniciando...');
+  setTimeout(()=>location.reload(),650)
+}
+async function backup(){
+  let blob=new Blob([JSON.stringify({app:'MA Perfumaria',version:'V12',createdAt:new Date().toISOString(),data:db},null,2)],{type:'application/json'}),nome=`backup_MA_Perfumaria_${today()}.json`;let ok=await entregarArquivo(blob,nome,'application/json');backupStatus.textContent=ok?'Backup gerado/compartilhado. Confirme que o arquivo foi salvo no aparelho.':'O backup não foi concluído.';msg(ok?'Backup preparado':'Backup não concluído')
+}
+function restore(e){let f=e.target.files?.[0];if(!f)return;let r=new FileReader;r.onload=()=>{try{let obj=JSON.parse(r.result),novo=obj.data||obj;if(!novo.products||!novo.clients||!novo.sales)throw 0;if(!confirm('Restaurar este backup substituirá os dados atuais deste aparelho. Continuar?'))return;db=novo;db.orders=db.orders||[];db.supplierOrders=db.supplierOrders||[];save();msg('Backup restaurado com sucesso')}catch{msg('Arquivo de backup inválido')}finally{e.target.value=''}};r.onerror=()=>msg('Não foi possível ler este arquivo');r.readAsText(f)}
+async function exportarAtualizacao(){let payload={type:'MA_PERFUMARIA_UPDATE',version:1,createdAt:new Date().toISOString(),products:db.products,clients:db.clients};let blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});await entregarArquivo(blob,`atualizacao_MA_Perfumaria_${today()}.json`,'application/json');msg('Atualização preparada')}
+function mergeByIdentity(local,incoming,type){let out=[...local];for(let n of incoming||[]){let idx=out.findIndex(x=>x.id===n.id||(type==='p'&&((n.barcode&&x.barcode===n.barcode)||(n.code&&x.code===n.code)))||(type==='c'&&n.phone&&x.phone===n.phone));if(idx>=0)out[idx]={...out[idx],...n};else out.push(n)}return out}
+function importarAtualizacao(e){let f=e.target.files?.[0];if(!f)return;let r=new FileReader;r.onload=()=>{try{let x=JSON.parse(r.result);if(x.type!=='MA_PERFUMARIA_UPDATE')throw 0;if(!confirm('Atualizar produtos, estoque e clientes deste aparelho mantendo as vendas e pedidos locais?'))return;db.products=mergeByIdentity(db.products,x.products,'p');db.clients=mergeByIdentity(db.clients,x.clients,'c');save();msg('Cadastros atualizados. Vendas locais foram mantidas.')}catch{msg('Arquivo de atualização inválido')}finally{e.target.value=''}};r.readAsText(f)}
+function excelRows(){
+  let produtos=db.products.map(p=>({Produto:p.name,Marca:p.brand,Linha:p.line,Codigo:p.code,Barcode:p.barcode,Categoria:p.category,Fornecedor:p.supplier,Status:p.status,Preco:p.price,Estoque:stock(p),CustoMedio:avgCost(p),ValorEstoque:(p.lots||[]).reduce((a,l)=>a+l.qty*l.cost,0),EstoqueMinimo:p.min}));
+  let lotes=[];db.products.forEach(p=>(p.lots||[]).forEach(l=>lotes.push({Produto:p.name,Codigo:p.code,Lote:l.id,Quantidade:l.qty,CustoUnitario:l.cost,Pontos:l.points,Entrada:l.date,Validade:l.expiry,Observacao:l.obs})));
+  let clientes=db.clients.map(c=>({Cliente:c.name,Telefone:c.phone,Observacoes:c.obs,TotalComprado:db.sales.filter(s=>s.clientId===c.id).reduce((a,s)=>a+s.total,0),EmAberto:db.sales.filter(s=>s.clientId===c.id).reduce((a,s)=>a+(s.installments||[]).reduce((x,i)=>x+balance(i),0),0)}));
+  let vendas=[],parcelas=[],receb=[];db.sales.forEach(s=>{let c=db.clients.find(x=>x.id===s.clientId);vendas.push({Data:s.date,Cliente:c?.name||'',Total:s.total,Desconto:s.discount||0,Lucro:saleProfit(s),Forma:s.form,Itens:(s.items||[]).map(i=>`${i.qty}x ${i.name}`).join('; ')});(s.installments||[]).forEach(i=>{parcelas.push({Cliente:c?.name||'',Venda:s.date,Parcela:i.n,Vencimento:i.due,Valor:i.value,Saldo:balance(i),Status:st(i)[0]});(i.payments||[]).forEach(p=>receb.push({Cliente:c?.name||'',Parcela:i.n,Data:p.date,Valor:p.value,Forma:p.form}))})});
+  let pedidos=db.orders.map(o=>({Cliente:db.clients.find(c=>c.id===o.clientId)?.name||'',Produto:o.product,Codigo:o.code,Quantidade:o.qty,Data:o.date,Status:o.status,Entrega:o.deliveredDate||'',Observacao:o.obs}));
+  let compras=db.supplierOrders.map(o=>({Produto:db.products.find(p=>p.id===o.productId)?.name||o.productName||'',Marca:o.brand||db.products.find(p=>p.id===o.productId)?.brand||'',Quantidade:o.qty,CustoEstimado:o.estimatedCost||0,Fornecedor:o.supplier,Data:o.date,Status:o.status,ProdutoNovo:o.isNewProduct?'Sim':'Não',Observacao:o.obs}));
+  let fat=db.sales.reduce((a,s)=>a+s.total,0),luc=db.sales.reduce((a,s)=>a+saleProfit(s),0),ab=db.sales.reduce((a,s)=>a+(s.installments||[]).reduce((x,i)=>x+balance(i),0),0),est=db.products.reduce((a,p)=>a+(p.lots||[]).reduce((x,l)=>x+l.qty*l.cost,0),0);
+  let resumo=[{Indicador:'Faturamento total',Valor:fat},{Indicador:'Lucro estimado total',Valor:luc},{Indicador:'A receber',Valor:ab},{Indicador:'Valor do estoque',Valor:est},{Indicador:'Clientes',Valor:db.clients.length},{Indicador:'Produtos cadastrados',Valor:db.products.length},{Indicador:'Gerado em',Valor:new Date().toLocaleString('pt-BR')}];
+  return {Resumo:resumo,Produtos:produtos,Lotes:lotes,Clientes:clientes,Vendas:vendas,Parcelas:parcelas,Recebimentos:receb,Pedidos:pedidos,Compras:compras}
+}
+async function exportarExcelCompleto(){
+  let dados=excelRows();
+  if(window.XLSX){let wb=XLSX.utils.book_new();Object.entries(dados).forEach(([nome,rows])=>XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows.length?rows:[{Info:'Sem dados'}]),nome.slice(0,31)));let arr=XLSX.write(wb,{bookType:'xlsx',type:'array'}),blob=new Blob([arr],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});await entregarArquivo(blob,`MA_Perfumaria_${today()}.xlsx`,blob.type);msg('Excel preparado');return}
+  let csv=Object.entries(dados).map(([n,rows])=>`### ${n}\n`+(rows.length?Object.keys(rows[0]).join(';')+'\n'+rows.map(r=>Object.values(r).map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\n'):'Sem dados')).join('\n\n');await entregarArquivo(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),`MA_Perfumaria_${today()}.csv`,'text/csv');msg('Biblioteca Excel indisponível; arquivo CSV preparado')
+}
+function render(){renderProdutos();renderClientes();selects();renderSales();receivables();renderPedidos();renderCatalogo();dashboard();reports()}
+
+let scanMode='',scanStream=null,scanTimer=null,html5Scanner=null,zxingReader=null,zxingControls=null,zxingRotateTimer=null,zxingRotateBusy=false;
+
+function normalizaCodigo(v){return String(v||'').replace(/\s+/g,'').trim()}
+function isIOS(){
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+}
+function formatosHtml5(){
+  if(!window.Html5QrcodeSupportedFormats)return undefined;
+  return [
+    Html5QrcodeSupportedFormats.EAN_13,
+    Html5QrcodeSupportedFormats.EAN_8,
+    Html5QrcodeSupportedFormats.UPC_A,
+    Html5QrcodeSupportedFormats.UPC_E,
+    Html5QrcodeSupportedFormats.CODE_128,
+    Html5QrcodeSupportedFormats.CODE_39,
+    Html5QrcodeSupportedFormats.ITF
+  ];
+}
+function aplicaCodigoEscaneado(code,mode){
+  code=normalizaCodigo(code);if(!code)return;
+  if(mode==='cadastro'){
+    pBarcode.value=code;msg('Código de barras lido: '+code)
+  }else if(mode==='venda'){
+    vCodigo.value=code;
+    let p=db.products.find(x=>normalizaCodigo(x.code)===code||normalizaCodigo(x.barcode)===code);
+    if(p){vProduto.value=p.id;msg('Produto encontrado: '+p.name)}
+    else msg('Código não cadastrado: '+code)
+  }
+}
+
+
+function stopZXingRotationScan(){
+  if(zxingRotateTimer){clearInterval(zxingRotateTimer);zxingRotateTimer=null}
+  zxingRotateBusy=false;
+}
+function drawRotatedVideoFrame(video,deg){
+  const vw=video.videoWidth||0, vh=video.videoHeight||0;
+  if(!vw||!vh)return null;
+  const c=document.createElement('canvas'),ctx=c.getContext('2d',{willReadFrequently:true});
+  if(deg===90||deg===270){c.width=vh;c.height=vw}else{c.width=vw;c.height=vh}
+  ctx.save();
+  if(deg===0){
+    ctx.drawImage(video,0,0,vw,vh);
+  }else if(deg===180){
+    ctx.translate(c.width,c.height);ctx.rotate(Math.PI);ctx.drawImage(video,0,0,vw,vh);
+  }else if(deg===90){
+    ctx.translate(c.width,0);ctx.rotate(Math.PI/2);ctx.drawImage(video,0,0,vw,vh);
+  }else if(deg===270){
+    ctx.translate(0,c.height);ctx.rotate(-Math.PI/2);ctx.drawImage(video,0,0,vw,vh);
+  }
+  ctx.restore();
+  return c
+}
+async function scanZXingRotations(mode){
+  if(!isIOS()||zxingRotateBusy||!scanVideo?.srcObject||!window.ZXingBrowser?.BrowserMultiFormatReader)return;
+  if((scanVideo.readyState||0)<2)return;
+  zxingRotateBusy=true;
+  let rr=null;
+  try{
+    rr=new ZXingBrowser.BrowserMultiFormatReader();
+    for(const deg of [0,180,90,270]){
+      if(!scanVideo?.srcObject)break;
+      const canvas=drawRotatedVideoFrame(scanVideo,deg);
+      if(!canvas)continue;
+      try{
+        const result=await rr.decodeFromCanvas(canvas);
+        const code=result?.getText?result.getText():(result?.text||'');
+        if(code){
+          stopZXingRotationScan();
+          try{zxingControls?.stop()}catch(e){}
+          zxingControls=null;
+          await stopScanner();
+          aplicaCodigoEscaneado(code,mode);
+          return;
+        }
+      }catch(e){}
+    }
+  }finally{
+    try{rr?.reset?.()}catch(e){}
+    zxingRotateBusy=false;
+  }
+}
+function startZXingRotationScan(mode){
+  stopZXingRotationScan();
+  zxingRotateTimer=setInterval(()=>scanZXingRotations(mode),550);
+}
+
+async function startZXingScanner(mode){
+  if(!window.ZXingBrowser?.BrowserMultiFormatReader)return false;
+  try{
+    scanVideo.style.display='block';
+    html5Reader.innerHTML='';
+    scanStatus.textContent='iPhone: aproxime o código até ocupar boa parte da faixa. Pode segurar o produto em qualquer orientação.';
+    zxingReader=new ZXingBrowser.BrowserMultiFormatReader(undefined,{
+      delayBetweenScanAttempts:80,
+      delayBetweenScanSuccess:300
+    });
+    let constraints={
+      audio:false,
+      video:{
+        facingMode:{ideal:'environment'},
+        width:{ideal:1920},
+        height:{ideal:1080}
+      }
+    };
+    zxingControls=await zxingReader.decodeFromConstraints(
+      constraints,
+      scanVideo,
+      (result,error,controls)=>{
+        if(result){
+          let code=result.getText?result.getText():(result.text||String(result));
+          try{controls?.stop()}catch(e){}
+          zxingControls=null;
+          stopScanner();
+          aplicaCodigoEscaneado(code,mode);
+        }
+      }
+    );
+    // Refinamento para iPhone/Safari: tenta manter foco contínuo e usar resolução estável.
+    try{
+      const track=scanVideo.srcObject?.getVideoTracks?.()[0];
+      const caps=track?.getCapabilities?.()||{};
+      const adv={};
+      if(caps.focusMode?.includes?.('continuous')) adv.focusMode='continuous';
+      if(caps.zoom){
+        const min=Number(caps.zoom.min||1), max=Number(caps.zoom.max||1);
+        if(max>min) adv.zoom=Math.min(max, Math.max(min, 1.15));
+      }
+      if(track && Object.keys(adv).length) await track.applyConstraints({advanced:[adv]});
+    }catch(_){}
+    startZXingRotationScan(mode);
+    return true
+  }catch(e){
+    try{zxingControls?.stop()}catch(x){}
+    zxingControls=null;zxingReader=null;
+    stopNativeScannerOnly();
+    return false
+  }
+}
+async function scanImageZXing(file,mode){
+  if(!window.ZXingBrowser?.BrowserMultiFormatReader)return false;
+  let url=URL.createObjectURL(file),reader=null,img=null;
+  try{
+    reader=new ZXingBrowser.BrowserMultiFormatReader();
+    try{
+      let result=await reader.decodeFromImageUrl(url);
+      let code=result?.getText?result.getText():(result?.text||'');
+      if(code){aplicaCodigoEscaneado(code,mode);return true}
+    }catch(e){}
+    if(isIOS()){
+      img=new Image();
+      await new Promise((ok,fail)=>{img.onload=ok;img.onerror=fail;img.src=url});
+      for(const deg of [180,90,270]){
+        const c=document.createElement('canvas'),ctx=c.getContext('2d');
+        const w=img.naturalWidth,h=img.naturalHeight;
+        if(deg===90||deg===270){c.width=h;c.height=w}else{c.width=w;c.height=h}
+        ctx.save();
+        if(deg===180){ctx.translate(c.width,c.height);ctx.rotate(Math.PI)}
+        else if(deg===90){ctx.translate(c.width,0);ctx.rotate(Math.PI/2)}
+        else if(deg===270){ctx.translate(0,c.height);ctx.rotate(-Math.PI/2)}
+        ctx.drawImage(img,0,0,w,h);ctx.restore();
+        try{
+          const result=await reader.decodeFromCanvas(c);
+          const code=result?.getText?result.getText():(result?.text||'');
+          if(code){aplicaCodigoEscaneado(code,mode);return true}
+        }catch(e){}
+      }
+    }
+  }catch(e){
+  }finally{
+    try{reader?.reset?.()}catch(e){}
+    URL.revokeObjectURL(url)
+  }
+  return false
+}
+
+async function startHtml5Scanner(mode){
+  if(!window.Html5Qrcode)return false;
+  try{
+    scanVideo.style.display='none';
+    html5Reader.innerHTML='';
+    html5Scanner=new Html5Qrcode('html5Reader',{formatsToSupport:formatosHtml5(),verbose:false});
+    scanStatus.textContent=isIOS()
+      ? 'iPhone: aproxime o código, mantenha-o na horizontal e aguarde o foco.'
+      : 'Centralize o código dentro da área.';
+    let cameraConfig={facingMode:'environment'};
+    let scanConfig={
+      fps:isIOS()?15:12,
+      qrbox:(vw,vh)=>{
+        let w=Math.min(Math.floor(vw*0.92),420);
+        let hh=Math.min(Math.max(150,Math.floor(vh*0.34)),220);
+        return {width:w,height:hh}
+      },
+      aspectRatio:1.777778,
+      disableFlip:false
+    };
+    await html5Scanner.start(
+      cameraConfig,
+      scanConfig,
+      code=>{stopScanner();aplicaCodigoEscaneado(code,mode)},
+      ()=>{}
+    );
+    return true
+  }catch(e){
+    try{await html5Scanner?.clear()}catch(x){}
+    html5Scanner=null;
+    html5Reader.innerHTML='';
+    return false
+  }
+}
+async function startNativeScanner(mode){
+  if(!('BarcodeDetector' in window) || !navigator.mediaDevices?.getUserMedia)return false;
+  try{
+    let supported=await BarcodeDetector.getSupportedFormats?.().catch(()=>[])||[];
+    let wanted=['ean_13','ean_8','upc_a','upc_e','code_128','code_39','itf'];
+    let fmts=supported.length?wanted.filter(x=>supported.includes(x)):wanted;
+    let detector=new BarcodeDetector(fmts.length?{formats:fmts}:undefined);
+    scanStream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}
+    });
+    scanVideo.srcObject=scanStream;scanVideo.style.display='block';html5Reader.innerHTML='';
+    await scanVideo.play();
+    scanStatus.textContent='Centralize o código e aguarde o foco.';
+    const loop=async()=>{
+      try{
+        let codes=await detector.detect(scanVideo);
+        if(codes?.length){
+          let c=codes[0].rawValue;stopScanner();aplicaCodigoEscaneado(c,mode);return
+        }
+      }catch(e){}
+      scanTimer=setTimeout(loop,180)
+    };
+    loop();return true
+  }catch(e){stopNativeScannerOnly();return false}
+}
+async function startScanner(mode){
+  scanMode=mode;
+  scanStatus.textContent='Solicitando acesso à câmera...';
+  dlgScanner.showModal();
+
+  let ok=false;
+  if(isIOS()){
+    // iOS/Safari: novo motor ZXing primeiro, independente do leitor usado no Android.
+    ok=await startZXingScanner(mode);
+    if(!ok)ok=await startHtml5Scanner(mode);
+    if(!ok)ok=await startNativeScanner(mode)
+  }else{
+    // Android: preserva o caminho que já estava funcionando.
+    ok=await startNativeScanner(mode);
+    if(!ok)ok=await startHtml5Scanner(mode)
+  }
+  if(!ok){
+    if(dlgScanner.open)dlgScanner.close();
+    msg('Não consegui iniciar a leitura. Verifique a permissão da câmera ou use “Ler por foto”.')
+  }
+}
+function stopNativeScannerOnly(){
+  if(scanTimer){clearTimeout(scanTimer);scanTimer=null}
+  if(scanStream){scanStream.getTracks().forEach(t=>t.stop());scanStream=null}
+  if(window.scanVideo){scanVideo.pause();scanVideo.srcObject=null;scanVideo.style.display='none'}
+}
+async function stopScanner(){
+  stopZXingRotationScan();
+  try{zxingControls?.stop()}catch(e){}
+  zxingControls=null;
+  try{zxingReader?.reset?.()}catch(e){}
+  zxingReader=null;
+  stopNativeScannerOnly();
+  if(html5Scanner){
+    try{await html5Scanner.stop()}catch(e){}
+    try{await html5Scanner.clear()}catch(e){}
+    html5Scanner=null
+  }
+  html5Reader.innerHTML='';
+  if(window.dlgScanner&&dlgScanner.open)dlgScanner.close()
+}
+async function scanImageHtml5(file,mode){
+  if(!window.Html5Qrcode)return false;
+  let tempId='scanFileTemp_'+Date.now(),d=document.createElement('div');
+  d.id=tempId;d.style.position='fixed';d.style.left='-9999px';d.style.width='1px';d.style.height='1px';
+  document.body.appendChild(d);
+  let r=null;
+  try{
+    r=new Html5Qrcode(tempId,{formatsToSupport:formatosHtml5(),verbose:false});
+    let code=await r.scanFile(file,true);
+    try{await r.clear()}catch(e){}
+    d.remove();
+    aplicaCodigoEscaneado(code,mode);
+    return true
+  }catch(e){
+    try{await r?.clear()}catch(x){}
+    d.remove();
+    return false
+  }
+}
+async function scanImageNative(file,mode){
+  if(!('BarcodeDetector' in window))return false;
+  try{
+    let bmp=await createImageBitmap(file);
+    let detector=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e','code_128','code_39','itf']});
+    let codes=await detector.detect(bmp);
+    if(codes?.length){aplicaCodigoEscaneado(codes[0].rawValue,mode);return true}
+  }catch(e){}
+  return false
+}
+async function scanImageFile(ev,mode){
+  let file=ev.target.files?.[0];if(!file)return;
+  try{
+    let ok=false;
+    if(isIOS()){
+      ok=await scanImageZXing(file,mode);
+      if(!ok)ok=await scanImageHtml5(file,mode);
+      if(!ok)ok=await scanImageNative(file,mode)
+    }else{
+      ok=await scanImageNative(file,mode);
+      if(!ok)ok=await scanImageHtml5(file,mode)
+    }
+    if(!ok)msg('Não consegui identificar o código. No iPhone, fotografe de perto, sem reflexo, com o código reto e ocupando boa parte da imagem.')
+  }catch(e){
+    msg('Não consegui ler esta foto. Verifique a permissão de Fotos/Câmera e tente novamente.')
+  }
+  ev.target.value=''
+}
+
+vData.value=today();vVenc.value=today();let _d=new Date(),_ym=today().slice(0,7);rIni.value=_ym+'-01';rFim.value=today();render();
+
+document.addEventListener('DOMContentLoaded',()=>{
+  aplicarSaasGate();
+  setTimeout(()=>{try{atualizaParcelasEditor(false)}catch(e){}},100);
+});
+
+</script>
+<script>
+
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',(e)=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+  const b=document.getElementById('btnInstalarApp');
+  if(b)b.style.display='';
+  const s=document.getElementById('installStatus');
+  if(s)s.textContent='Pronto para instalar como aplicativo neste aparelho.';
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  const s=document.getElementById('installStatus');
+  if(s)s.textContent='MA Perfumaria instalada neste aparelho.';
+});
+async function instalarApp(){
+  const isiOS=/iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+  if(isiOS){
+    msg('No iPhone: toque em Compartilhar e depois em “Adicionar à Tela de Início”.');
+    return;
+  }
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    try{await deferredInstallPrompt.userChoice}catch(e){}
+    deferredInstallPrompt=null;
+  }else{
+    msg('Se o botão de instalação não aparecer, abra o menu do navegador e escolha “Instalar app” ou “Adicionar à tela inicial”.');
+  }
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+<script>
+const SAAS_KEY='gestto_saas_demo_v1';
+function aplicarSaasGate(){
+  const a=JSON.parse(localStorage.getItem(SAAS_KEY)||'null');
+  if(a&&a.active){lockScreen.classList.add('hidden'); atualizarEmpresaDemo(a)} else {lockScreen.classList.remove('hidden');showLogin()}
+}
+function gateOnly(id){['gateLogin','gateSignup','gatePlans'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));window.scrollTo(0,0)}
+function showLogin(){gateOnly('gateLogin')} function showSignup(){gateOnly('gateSignup')} function showPlans(){gateOnly('gatePlans')}
+function demoLogin(){
+ const a=JSON.parse(localStorage.getItem(SAAS_KEY)||'null');
+ if(a&&a.active){lockScreen.classList.add('hidden');atualizarEmpresaDemo(a);return}
+ document.querySelector('#gateLogin .trialText').textContent='Conta de demonstração ainda não criada. Toque em “Criar minha conta”.';
+}
+function activateDemo(){
+ const plano=document.querySelector('input[name="plano"]:checked')?.value||'Profissional';
+ const a={active:true,nome:sgNome.value||'Administrador',empresa:sgEmpresa.value||'Minha Empresa',email:sgEmail.value||'',tipo:sgTipo.value,plano};
+ localStorage.setItem(SAAS_KEY,JSON.stringify(a));lockScreen.classList.add('hidden');atualizarEmpresaDemo(a);msg('Conta de teste ativada • Plano '+plano)
+}
+function atualizarEmpresaDemo(a){
+ const h=document.querySelector('.brand h1');if(h)h.textContent=a.empresa||'Gestto';
+ const p=document.querySelector('.brand p');if(p)p.textContent='Gestto • '+(a.plano||'Plano de teste');
+}
+function bloquearApp(){localStorage.removeItem(SAAS_KEY);lockScreen.classList.remove('hidden');showLogin()}
+</script>
+</body></html>
